@@ -5,7 +5,8 @@ public class InvoiceBuilder {
     private Long id;
     private Person billFrom;
     private Person billTo; //customer
-    private LocalDate date;
+    private LocalDate issueDate;
+    private LocalDate dueDate;
     private List<Item> items;
 
     public InvoiceBuilder id(){
@@ -24,10 +25,15 @@ public class InvoiceBuilder {
     }
 
 
-    public InvoiceBuilder date(LocalDate date) {
-        this.date = date;
+    public InvoiceBuilder dueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
         return this;
     }
+    
+    public InvoiceBuilder issueDate(LocalDate issueDate) {
+        this.issueDate = issueDate;
+        return this;
+    }    
 
     public InvoiceBuilder items(List<Item> items) {
         this.items = items;
@@ -38,8 +44,9 @@ public class InvoiceBuilder {
         Invoice invoice = new Invoice();
         invoice.setId(id);
         invoice.setBillFrom(billFrom);
-        invoice.setBillTo(billTo);
-        invoice.setDate(date);
+        invoice.setBillTo(billTo);        
+        invoice.setIssueDate(issueDate);
+        invoice.setDueDate(dueDate);
         invoice.setItems(items);
         return invoice;
     }

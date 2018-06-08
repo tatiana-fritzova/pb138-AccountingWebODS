@@ -1,3 +1,4 @@
+import exceptions.IllegalEntityException;
 import java.util.List;
 
 public interface InvoiceManager {
@@ -5,8 +6,9 @@ public interface InvoiceManager {
     /**
      * Adds new invoice (expense or income) to the ods file.
      * @param invoice invoice to be created
+     * @throws exceptions.IllegalEntityException
      */
-    void createInvoice(Invoice invoice);
+    void createInvoice(Invoice invoice) throws IllegalEntityException;
 
     /**
      * Updates an invoice already saved in the ods file.
