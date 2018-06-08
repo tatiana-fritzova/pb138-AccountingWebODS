@@ -1,10 +1,26 @@
+import exceptions.IllegalEntityException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class InvoiceManagerImpl implements InvoiceManager {
+    
+    private List<Invoice> invoices;
+    
+    public InvoiceManagerImpl(){
+        this.invoices = new ArrayList<>();
+    }
+    
+    public InvoiceManagerImpl(List<Invoice> invoices){
+        this.invoices = invoices;
+    }
 
     @Override
-    public void createInvoice(Invoice invoice) {
-
+    public void createInvoice(Invoice invoice) throws IllegalEntityException{
+        if (invoice == null){
+            throw new IllegalEntityException("Invoice cannot be null");
+        }
+        invoices.add(invoice);
     }
 
     @Override
@@ -14,36 +30,74 @@ public class InvoiceManagerImpl implements InvoiceManager {
 
     @Override
     public void deleteInvoice(Invoice invoice) {
-
+        if (invoice == null){
+            throw new IllegalArgumentException("Invoice cannot be null");
+        }
+        invoices.remove(invoice);
     }
 
     @Override
-    public Double getCurrentBalance() {
-        return null;
+    public Double getCurrentBalance() {   
+        double balance = 0.0;           
+        for (Invoice i : invoices){       
+            if (i.getBillFrom() == null){
+                for (Item item : i.getItems()){
+                    balance -= item.getPrice();
+                }
+            } else if (i.getBillTo() == null) {
+                for (Item item : i.getItems()){
+                    balance += item.getPrice();
+                }
+            }
+        }
+        return balance;
     }
 
     @Override
-    public Invoice getInvoiceById(Long id) {
+    public Invoice getInvoiceById(Long id) { 
+        for (Invoice i : invoices){
+            if (i.getId() == id){
+                return i;
+            }
+        }
         return null;
     }
 
     @Override
     public List<Invoice> findAllInvoices() {
-        return null;
+        return Collections.unmodifiableList(invoices);
     }
 
     @Override
     public List<Invoice> findAllExpenses() {
-        return null;
+        List<Invoice> expenses = new ArrayList<>();
+        for (Invoice i : invoices){
+            if (i.getBillFrom() == null){
+                expenses.add(i);
+            }
+        }
+        if (expenses.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return expenses;
     }
 
     @Override
     public List<Invoice> findAllIncomes() {
-        return null;
+        List<Invoice> incomes = new ArrayList<>();
+        for (Invoice i : invoices){
+            if (i.getBillTo() == null){
+                incomes.add(i);
+            }
+        }
+        if (incomes.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return incomes;
     }
 
     @Override
     public void exportToPdf() {
-
+        
     }
 }
