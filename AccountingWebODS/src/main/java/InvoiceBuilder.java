@@ -2,19 +2,23 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class InvoiceBuilder {
-    private Long id;
+    private int id;
     private Person billFrom;
     private Person billTo; //customer
     private LocalDate issueDate;
-    private LocalDate dueDate;
-    private double price;
-    private String description;
+    private LocalDate dueDate;    
+    private List<Item> items;
 
     public InvoiceBuilder id(){
         this.id = id;
         return this;
     }
 
+    public InvoiceBuilder items(List<Item> items) {
+         this.items = items;
+         return this;
+     }
+    
     public InvoiceBuilder billFrom(Person billFrom) {
         this.billFrom = billFrom;
         return this;
@@ -36,15 +40,6 @@ public class InvoiceBuilder {
         return this;
     }    
 
-    public InvoiceBuilder price(double price) {
-        this.price = price;
-        return this;
-    }
-    public InvoiceBuilder description(String description) {
-        this.description = description;
-        return this;
-    }
-
     public Invoice build() {
         Invoice invoice = new Invoice();
         invoice.setId(id);
@@ -52,8 +47,7 @@ public class InvoiceBuilder {
         invoice.setBillTo(billTo);        
         invoice.setIssueDate(issueDate);
         invoice.setDueDate(dueDate);
-        invoice.setPrice(price);
-        invoice.setDescription(description);
+        invoice.setItems(items);
         return invoice;
     }
 }

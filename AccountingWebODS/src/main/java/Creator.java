@@ -6,9 +6,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import org.jopendocument.dom.OOUtils;
+import org.jopendocument.dom.spreadsheet.Row;
 import org.jopendocument.dom.spreadsheet.Sheet;
 import org.jopendocument.dom.spreadsheet.SpreadSheet;
 
@@ -51,32 +54,43 @@ public class Creator {
 	//the file is being read so exceptions can be handled.
 	Invoice in = new Invoice();
         in.setBillFrom(new Person("Philip" ,"Slovakia"));
-        Person person = new Person("Tom","addres");
-        in.setBillTo(person);
+        Person person = new Person("Tom","address");
+        in.setBillTo(person);        
+        in.setIssueDate(LocalDate.now());
         in.setDueDate(LocalDate.MAX);
-        in.setId(Long.MIN_VALUE);
-        in.setPrice(200.0);
-        in.setDescription("phone");
-        InvoiceManager manager = new InvoiceManagerImpl();
-        manager.createInvoice(in);
-                
-                
+        
+        Invoice i = new Invoice();
+        i.setBillFrom(new Person("Me" ,"A"));
+        Person perso = new Person("You","B");
+        i.setBillTo(perso);
+        in.setIssueDate(LocalDate.now());
+        i.setDueDate(LocalDate.MAX);
+        
+        try {
+            File file = new File("evidence.ods");
+            SpreadSheet spreadSheet = SpreadSheet.createFromFile(file);
+            Sheet sheet = spreadSheet.addSheet("Sheet");
+            addHeading(sheet);
+            InvoiceManager manager = new InvoiceManagerImpl(sheet);
+            manager.createInvoice(in);
+            manager.createInvoice(i);
+            saveFile(sheet);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
     
     public static void addHeading(Sheet sheet) throws IOException {
-        sheet.ensureRowCount(4);
+        sheet.ensureRowCount(1);
         sheet.ensureColumnCount(10);
-        sheet.getCellAt("A1").setValue("From");
-        sheet.getCellAt("A2").setValue("To");
-        sheet.getCellAt("A3").setValue("price");
-        sheet.getCellAt("A4").setValue("description");
-        
-
-        sheet.getCellAt("B3").setValue(0.0);
-        
-        sheet.getCellAt("D1").setValue("id");
-        sheet.getCellAt("D2").setValue("issue Date");
-        sheet.getCellAt("D3").setValue("due Date");
+        sheet.getCellAt(0,0).setValue("Invoice ID");
+        sheet.getCellAt(1,0).setValue("From");
+        sheet.getCellAt(2,0).setValue("To");    
+        sheet.getCellAt(3,0).setValue("Issue Date");
+        sheet.getCellAt(4,0).setValue("Due Date");        
+        sheet.getCellAt(5,0).setValue("Items");             
+        sheet.getCellAt(6,0).setValue("Total Amount");
         
     }
     

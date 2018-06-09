@@ -1,49 +1,42 @@
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 public class Invoice {
-    private Long id;
+    public static int id = 0;
     private Person billFrom;
     private Person billTo; //customer
     private LocalDate issueDate;
     private LocalDate dueDate;
-    private double price;
-    private String description;
+    private List<Item> items = new ArrayList<>();
 
-    public Invoice() {}
+    public Invoice() {
+        id++;
+    }
 
-    public Invoice(Long id, Person billFrom, Person billTo,
-                   LocalDate issueDate, LocalDate dueDate, double price, String info) {
-        this.id = id;
+    public Invoice(Person billFrom, Person billTo,
+                   LocalDate issueDate, LocalDate dueDate, List<Item> items) {
+        id++;
         this.billFrom = billFrom;
         this.billTo = billTo;
         this.issueDate = issueDate;
         this.dueDate = dueDate;
-        this.price = price;
-        this.description = info;
-    }
+        this.items = items;
+    }    
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Long getId() {
+    public int getId() {
         return id;
     }
+    
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
 
+    public List<Item> getItems() {
+        return Collections.unmodifiableList(items);
+    }
 
     public Person getBillFrom() {
         return billFrom;
@@ -62,7 +55,7 @@ public class Invoice {
     }
     
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -93,7 +86,6 @@ public class Invoice {
                 ", billTo='" + billTo + '\'' +                
                 ", issueDate=" + issueDate +
                 ", dueDate=" + dueDate +
-                ", price=" + price +
                 '}';
     }
 
@@ -107,11 +99,11 @@ public class Invoice {
                 Objects.equals(billTo, invoice.billTo) &&                
                 Objects.equals(issueDate, invoice.issueDate) &&
                 Objects.equals(dueDate, invoice.dueDate) &&
-                Objects.equals(price, invoice.price);
+                Objects.equals(items, invoice.items);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id,  billFrom, billTo, issueDate, dueDate, price);
+        return Objects.hash(id,  billFrom, billTo, issueDate, dueDate, items);
     }
 }

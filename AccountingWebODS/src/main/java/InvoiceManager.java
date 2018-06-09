@@ -33,7 +33,7 @@ public interface InvoiceManager {
      * @param id id of demanded invoice
      * @return invoice with given id
      */
-    Invoice getInvoiceById(Long id);
+    Invoice getInvoiceById(int id);
 
     /**
      * Returns a list of all invoices.

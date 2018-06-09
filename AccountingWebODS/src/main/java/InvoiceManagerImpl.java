@@ -2,6 +2,7 @@
 import exceptions.IllegalEntityException;
 import java.io.File;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,12 +14,15 @@ import org.jopendocument.dom.spreadsheet.SpreadSheet;
 public class InvoiceManagerImpl implements InvoiceManager {
 
     private List<Invoice> invoices;
+    private Sheet sheet;
 
-    public InvoiceManagerImpl() {
+    public InvoiceManagerImpl(Sheet sheet) {
+        this.sheet = sheet;
         this.invoices = new ArrayList<>();
     }
 
-    public InvoiceManagerImpl(List<Invoice> invoices) {
+    public InvoiceManagerImpl(SpreadSheet spreadsheet, List<Invoice> invoices) {        
+        this.sheet = sheet;
         this.invoices = invoices;
     }
 
@@ -27,24 +31,25 @@ public class InvoiceManagerImpl implements InvoiceManager {
         if (invoice == null) {
             throw new IllegalEntityException("Invoice cannot be null");
         }
-        File file = new File("evidence.ods");
-        try {
-            SpreadSheet spreadSheet = SpreadSheet.createFromFile(file);
-            createIt(spreadSheet, invoice);
+        try {          
+            createIt(invoice);            
+            invoices.add(invoice);
         } catch (IOException ex) {
             Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void createIt(SpreadSheet spreadSheet, Invoice invoice) throws IOException {
-        Sheet newSheet = spreadSheet.addSheet("oasdfg");
-        addHeading(newSheet, invoice);
-        newSheet.getCellAt("B3").setValue(invoice.getPrice());
-        newSheet.getCellAt("B2").setValue(invoice.getBillTo().getName());
-        newSheet.getCellAt("B1").setValue(invoice.getBillFrom().getName());
-        newSheet.getCellAt("B4").setValue(invoice.getDescription());
-        newSheet.getCellAt("E1").setValue(invoice.getId());
-        saveFile(newSheet);
+    public void createIt(Invoice invoice) throws IOException {
+        sheet.ensureRowCount(sheet.getRowCount()+1);
+        String rows = Integer.toString(sheet.getRowCount());
+        sheet.getCellAt("A" + rows).setValue(invoice.getId());        
+        sheet.getCellAt("B" + rows).setValue(invoice.getBillFrom().getName());
+        sheet.getCellAt("C" + rows).setValue(invoice.getBillTo().getName());
+        
+        
+      //  sheet.getCellAt("D" + rows).setValue(invoice.getIssueDate());        
+      //  sheet.getCellAt("E" + rows).setValue(invoice.getDueDate());
+        
 
     }
 
@@ -74,7 +79,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
     }
 
     @Override
-    public Invoice getInvoiceById(Long id) {
+    public Invoice getInvoiceById(int id) {
         for (Invoice i : invoices) {
             if (i.getId() == id) {
                 return i;
@@ -135,8 +140,5 @@ public class InvoiceManagerImpl implements InvoiceManager {
 
     }
 
-    public static void saveFile(Sheet sheet) throws IOException {
-        File newFile = new File("evidence.ods");
-        sheet.getSpreadSheet().saveAs(newFile);
-    }
+    
 }
