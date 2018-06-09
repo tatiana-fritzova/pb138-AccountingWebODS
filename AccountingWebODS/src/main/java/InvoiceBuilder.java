@@ -7,7 +7,8 @@ public class InvoiceBuilder {
     private Person billTo; //customer
     private LocalDate issueDate;
     private LocalDate dueDate;
-    private List<Item> items;
+    private double price;
+    private String description;
 
     public InvoiceBuilder id(){
         this.id = id;
@@ -35,8 +36,12 @@ public class InvoiceBuilder {
         return this;
     }    
 
-    public InvoiceBuilder items(List<Item> items) {
-        this.items = items;
+    public InvoiceBuilder price(double price) {
+        this.price = price;
+        return this;
+    }
+    public InvoiceBuilder description(String description) {
+        this.description = description;
         return this;
     }
 
@@ -47,7 +52,8 @@ public class InvoiceBuilder {
         invoice.setBillTo(billTo);        
         invoice.setIssueDate(issueDate);
         invoice.setDueDate(dueDate);
-        invoice.setItems(items);
+        invoice.setPrice(price);
+        invoice.setDescription(description);
         return invoice;
     }
 }

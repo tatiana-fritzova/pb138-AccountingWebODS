@@ -8,18 +8,36 @@ public class Invoice {
     private Person billTo; //customer
     private LocalDate issueDate;
     private LocalDate dueDate;
-    private List<Item> items;
+    private double price;
+    private String description;
 
     public Invoice() {}
 
     public Invoice(Long id, Person billFrom, Person billTo,
-                   LocalDate issueDate, LocalDate dueDate, List<Item> items) {
+                   LocalDate issueDate, LocalDate dueDate, double price, String info) {
         this.id = id;
         this.billFrom = billFrom;
         this.billTo = billTo;
         this.issueDate = issueDate;
         this.dueDate = dueDate;
-        this.items = items;
+        this.price = price;
+        this.description = info;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public Long getId() {
@@ -43,9 +61,6 @@ public class Invoice {
         return issueDate;
     }
     
-    public List<Item> getItems() {
-        return items;
-    }
 
     public void setId(Long id) {
         this.id = id;
@@ -69,10 +84,6 @@ public class Invoice {
         this.issueDate = issueDate;
     }
 
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
-
 
     @Override
     public String toString() {
@@ -82,7 +93,7 @@ public class Invoice {
                 ", billTo='" + billTo + '\'' +                
                 ", issueDate=" + issueDate +
                 ", dueDate=" + dueDate +
-                ", items=" + items +
+                ", price=" + price +
                 '}';
     }
 
@@ -96,11 +107,11 @@ public class Invoice {
                 Objects.equals(billTo, invoice.billTo) &&                
                 Objects.equals(issueDate, invoice.issueDate) &&
                 Objects.equals(dueDate, invoice.dueDate) &&
-                Objects.equals(items, invoice.items);
+                Objects.equals(price, invoice.price);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id,  billFrom, billTo, issueDate, dueDate, items);
+        return Objects.hash(id,  billFrom, billTo, issueDate, dueDate, price);
     }
 }
