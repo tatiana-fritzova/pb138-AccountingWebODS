@@ -1,35 +1,45 @@
+
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import org.jopendocument.dom.spreadsheet.Sheet;
+import org.jopendocument.dom.spreadsheet.SpreadSheet;
 
 public class Invoice {
-    public static int id = 0;
+
+    private Long id;
     private Person billFrom;
-    private Person billTo; //customer
+    private Person billTo; 
     private LocalDate issueDate;
     private LocalDate dueDate;
     private List<Item> items = new ArrayList<>();
+    private InvoiceType type;
 
-    public Invoice() {
-        id++;
+    public Invoice() throws IOException {
+        File file = new File("evidence.ods");
+        SpreadSheet spreadSheet = SpreadSheet.createFromFile(file);
+        int year = Integer.parseInt(spreadSheet.getSheet(spreadSheet.getSheetCount() - 1).getName());
+        Sheet sheet = spreadSheet.getSheet(String.valueOf(year));
+        Integer number = sheet.getRowCount() - 2;
+        this.id = number.longValue();
     }
 
-    public Invoice(Person billFrom, Person billTo,
-                   LocalDate issueDate, LocalDate dueDate, List<Item> items) {
-        id++;
-        this.billFrom = billFrom;
-        this.billTo = billTo;
-        this.issueDate = issueDate;
-        this.dueDate = dueDate;
-        this.items = items;
-    }    
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
-    
+
+    public InvoiceType getType() {
+        return type;
+    }
+
+    public void setType(InvoiceType type) {
+        this.type = type;
+    }
+
     public void setItems(List<Item> items) {
         this.items = items;
     }
@@ -53,12 +63,10 @@ public class Invoice {
     public LocalDate getIssueDate() {
         return issueDate;
     }
-    
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
-
 
     public void setBillFrom(Person billFrom) {
         this.billFrom = billFrom;
@@ -68,42 +76,46 @@ public class Invoice {
         this.billTo = billTo;
     }
 
-
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
-    
+
     public void setIssueDate(LocalDate issueDate) {
         this.issueDate = issueDate;
     }
 
-
     @Override
     public String toString() {
-        return "Invoice{" +
-                "id=" + id +
-                ", billFrom='" + billFrom + '\'' +
-                ", billTo='" + billTo + '\'' +                
-                ", issueDate=" + issueDate +
-                ", dueDate=" + dueDate +
-                '}';
+        return "Invoice{"
+                + "id=" + id
+                + "type=" + type
+                + ", billFrom='" + billFrom + '\''
+                + ", billTo='" + billTo + '\''
+                + ", issueDate=" + issueDate
+                + ", dueDate=" + dueDate
+                + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Invoice invoice = (Invoice) o;
-        return Objects.equals(id, invoice.id) &&
-                Objects.equals(billFrom, invoice.billFrom) &&
-                Objects.equals(billTo, invoice.billTo) &&                
-                Objects.equals(issueDate, invoice.issueDate) &&
-                Objects.equals(dueDate, invoice.dueDate) &&
-                Objects.equals(items, invoice.items);
+        return Objects.equals(id, invoice.id)
+                && Objects.equals(billFrom, invoice.billFrom)
+                && Objects.equals(billTo, invoice.billTo)
+                && Objects.equals(type, invoice.type)
+                && Objects.equals(issueDate, invoice.issueDate)
+                && Objects.equals(dueDate, invoice.dueDate)
+                && Objects.equals(items, invoice.items);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id,  billFrom, billTo, issueDate, dueDate, items);
+        return Objects.hash(id, type, billFrom, billTo, issueDate, dueDate, items);
     }
 }

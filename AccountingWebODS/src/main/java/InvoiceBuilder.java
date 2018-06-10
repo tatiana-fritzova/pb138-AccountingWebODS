@@ -1,16 +1,23 @@
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
 public class InvoiceBuilder {
-    private int id;
+    private Long id;
     private Person billFrom;
-    private Person billTo; //customer
+    private Person billTo; 
     private LocalDate issueDate;
     private LocalDate dueDate;    
     private List<Item> items;
+    private InvoiceType type;
 
-    public InvoiceBuilder id(){
+    public InvoiceBuilder id(Long id){
         this.id = id;
+        return this;
+    }
+    
+    public InvoiceBuilder type(InvoiceType type){
+        this.type = type;
         return this;
     }
 
@@ -40,7 +47,7 @@ public class InvoiceBuilder {
         return this;
     }    
 
-    public Invoice build() {
+    public Invoice build() throws IOException {
         Invoice invoice = new Invoice();
         invoice.setId(id);
         invoice.setBillFrom(billFrom);
@@ -48,6 +55,7 @@ public class InvoiceBuilder {
         invoice.setIssueDate(issueDate);
         invoice.setDueDate(dueDate);
         invoice.setItems(items);
+        invoice.setType(type);
         return invoice;
     }
 }
