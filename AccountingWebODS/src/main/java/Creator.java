@@ -3,6 +3,7 @@ import exceptions.IllegalEntityException;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -61,16 +62,16 @@ public class Creator {
         Person person = new Person("Tom", "address");
         in.setType(InvoiceType.INCOME);
         in.setBillTo(person);
-        in.setIssueDate(LocalDate.MIN);
-        in.setDueDate(LocalDate.MAX);
+        in.setIssueDate(LocalDate.of(1989, Month.MARCH, 10));
+        in.setDueDate(LocalDate.of(2015, Month.MARCH, 05));
 
         Invoice i = new Invoice();
         i.setBillFrom(new Person("Me", "A"));
         Person perso = new Person("You", "B");
         i.setBillTo(perso);
         i.setType(InvoiceType.EXPENSE);
-        i.setIssueDate(LocalDate.now());
-        i.setDueDate(LocalDate.MAX);
+        i.setIssueDate(LocalDate.of(2015, Month.MARCH, 10));
+        i.setDueDate(LocalDate.of(2015, Month.MARCH, 30));
         
         manager.createInvoice(in);
         manager.createInvoice(i);
