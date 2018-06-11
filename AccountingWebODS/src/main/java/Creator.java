@@ -37,21 +37,7 @@ public class Creator {
 
     public static void createOds() throws IOException, IllegalEntityException {
 
-        /**
-         * String[] columns = new String[]{"ID", "FROM", "TO",
-         * "PRICE","DESCRIPTION","ISSUE DATE" , "DUE DATE"};
-         *
-         * TableModel model = new DefaultTableModel(null, columns);
-         *
-         * // Save the data to an ODS file and open it. final File file = new
-         * File("evidence.ods"); SpreadSheet.createEmpty(model).saveAs(file);
-         * SpreadSheet sheet = SpreadSheet.createFromFile(file);
-         * sheet.addSheet("one"); final Sheet sheett =
-         * SpreadSheet.createFromFile(file).getSheet("one");
-         * System.out.println(sheett.getName());
-         * OOUtils.open(sheet.saveAs(file));
-         */
-        //Similar to the HSSF demo, we can read in everything into lists of
+        /*  //Similar to the HSSF demo, we can read in everything into lists of
         //lists, but it'd be better to abstract everything from here while
         //the file is being read so exceptions can be handled.
         InvoiceManager manager = new InvoiceManagerImpl();
@@ -75,25 +61,34 @@ public class Creator {
         
         manager.createInvoice(in);
         manager.createInvoice(i);
+         */
+        List<Invoice> list = new ArrayList();
+        List<Item> items = new ArrayList();
+        Item itemOne = new Item("Computer", 500.0);
+        Item itemTwo = new Item("Headphones", 15.50);
+        items.add(itemTwo);
+        items.add(itemOne);
+        Invoice in = new Invoice();
+        in.setBillTo(new Person("Philip Smith", "Ulica mieru 23 01841 Ilava"));
+        Person person = new Person("Katarina Matusova", "Pod Hajom 167 01841 Dubnica nad Vahom");
+        in.setBillFrom(person);
+        in.setIssueDate(LocalDate.of(2015, Month.MARCH, 21));
+        in.setDueDate(LocalDate.of(2015, Month.MARCH, 10));
+        in.setItems(items);
+        in.setType(InvoiceType.EXPENSE);
 
-    }
+        Invoice i = new Invoice();
+        i.setBillFrom(new Person("Me", "A"));
+        Person perso = new Person("You", "B");
+        i.setBillTo(perso);
+        i.setIssueDate(LocalDate.of(2018, Month.APRIL, 05));
+        i.setDueDate(LocalDate.of(2018, Month.MAY, 30));
+        i.setType(InvoiceType.INCOME);
+        list.add(i);
+        list.add(in);
+        PdfExporter e = new PdfExporter();
+        e.export(list, 2017);
 
-    public static void addHeading(Sheet sheet) throws IOException {
-        sheet.ensureRowCount(1);
-        sheet.ensureColumnCount(10);
-        sheet.getCellAt(0, 0).setValue("Invoice ID");
-        sheet.getCellAt(1, 0).setValue("From");
-        sheet.getCellAt(2, 0).setValue("To");
-        sheet.getCellAt(3, 0).setValue("Issue Date");
-        sheet.getCellAt(4, 0).setValue("Due Date");
-        sheet.getCellAt(5, 0).setValue("Items");
-        sheet.getCellAt(6, 0).setValue("Total Amount");
-
-    }
-
-    public static void saveFile(Sheet sheet) throws IOException {
-        File newFile = new File("evidence.ods");
-        sheet.getSpreadSheet().saveAs(newFile);
     }
 
 }

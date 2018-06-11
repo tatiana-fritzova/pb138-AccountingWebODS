@@ -8,6 +8,7 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfDocument;
 
 import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.draw.DottedLineSeparator;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -37,11 +38,8 @@ public class PdfExporter {
     }
 
     public void export(List<Invoice> invoices, int year) {
-        final OpenDocument doc = new OpenDocument();
-        doc.loadFrom("evidence.ods");
-
         // Open the PDF document
-        File outFile = new File("InvoicesFor" + String.valueOf(year)+".pdf");
+        File outFile = new File("Dokumenty/InvoicesFor" + String.valueOf(year)+".pdf");
         PdfDocument pdf = new PdfDocument();
         document.addDocListener(pdf);
 
@@ -75,6 +73,11 @@ public class PdfExporter {
         document.add(createParagraph(String.valueOf(in.getId()), "Invoice ID " + "\t\t" + ":" + "\t"));
         document.add(createParagraph(String.valueOf(in.getIssueDate()), "Issue Date" + "\t" + ":" + "\t"));
         document.add(createParagraph(String.valueOf(in.getDueDate()), "Due Date" + "\t" + ":" + "\t"));
+        document.add(createParagraph(String.valueOf(in.getType()),"Type"+ "\t" + ":" + "\t"));
+        
+        document.add(Chunk.NEWLINE);
+        DottedLineSeparator dottedline = new DottedLineSeparator();
+        document.add(dottedline);
         document.add(Chunk.NEWLINE);
 
         Paragraph pFrom = new Paragraph();
@@ -91,12 +94,19 @@ public class PdfExporter {
         document.add(pTo);
         document.add(createPersonParagraph(in.getBillTo()));
         document.add(Chunk.NEWLINE);
+        document.add(dottedline);
         document.add(Chunk.NEWLINE);
         document.add(createParagraph("", "Items" + "\t" + ":" + "\t"));
 
+        double totalPrice = 0.0;
         for (Item item : in.getItems()) {
             document.add(createItemParagraph(item));
+            totalPrice += item.getPrice();
         }
+        document.add(Chunk.NEWLINE);
+        DecimalFormat df = new DecimalFormat("####0.00");
+        
+        document.add(createParagraph(String.valueOf(df.format(totalPrice) + "\t\t EUR \t\t"),"Total Price "+ "\t" + ":" + "\t"));
     }
 
     private Paragraph createParagraph(String value, String name) {
