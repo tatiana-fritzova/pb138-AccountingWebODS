@@ -1,3 +1,5 @@
+package backend;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -6,12 +8,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jopendocument.dom.spreadsheet.Sheet;
 import org.jopendocument.dom.spreadsheet.SpreadSheet;
 
 public class Invoice {
 
-    private Long id;
+    private Long id = 0l;
+    public static Long count = 0l;
     private Person billFrom;
     private Person billTo; 
     private LocalDate issueDate;
@@ -19,13 +24,14 @@ public class Invoice {
     private List<Item> items = new ArrayList<>();
     private InvoiceType type;
 
-    public Invoice() throws IOException {
-        File file = new File("evidence.ods");
+    public Invoice() throws IOException{
+        /*File file = new File("evidence.ods");
         SpreadSheet spreadSheet = SpreadSheet.createFromFile(file);
         int year = Integer.parseInt(spreadSheet.getSheet(spreadSheet.getSheetCount() - 1).getName());
         Sheet sheet = spreadSheet.getSheet(String.valueOf(year));
         Integer number = sheet.getRowCount() - 2;
-        this.id = number.longValue();
+        this.id = number.longValue();*/
+        this.id = count++;
     }
 
     public Long getId() {

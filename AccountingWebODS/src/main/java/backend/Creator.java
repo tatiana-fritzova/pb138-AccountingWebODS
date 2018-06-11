@@ -1,3 +1,5 @@
+package backend;
+
 
 import exceptions.IllegalEntityException;
 import java.io.File;
@@ -37,31 +39,6 @@ public class Creator {
 
     public static void createOds() throws IOException, IllegalEntityException {
 
-        /*  //Similar to the HSSF demo, we can read in everything into lists of
-        //lists, but it'd be better to abstract everything from here while
-        //the file is being read so exceptions can be handled.
-        InvoiceManager manager = new InvoiceManagerImpl();
-        manager.newYearSheet(2018);
-        
-        Invoice in = new Invoice();
-        in.setBillFrom(new Person("Philip", "Slovakia"));
-        Person person = new Person("Tom", "address");
-        in.setType(InvoiceType.INCOME);
-        in.setBillTo(person);
-        in.setIssueDate(LocalDate.of(1989, Month.MARCH, 10));
-        in.setDueDate(LocalDate.of(2015, Month.MARCH, 05));
-
-        Invoice i = new Invoice();
-        i.setBillFrom(new Person("Me", "A"));
-        Person perso = new Person("You", "B");
-        i.setBillTo(perso);
-        i.setType(InvoiceType.EXPENSE);
-        i.setIssueDate(LocalDate.of(2015, Month.MARCH, 10));
-        i.setDueDate(LocalDate.of(2015, Month.MARCH, 30));
-        
-        manager.createInvoice(in);
-        manager.createInvoice(i);
-         */
         List<Invoice> list = new ArrayList();
         List<Item> items = new ArrayList();
         Item itemOne = new Item("Computer", 500.0);
@@ -89,6 +66,47 @@ public class Creator {
         PdfExporter e = new PdfExporter();
         e.export(list, 2017);
 
+        Item i1 = new Item("tv", 500.0);
+        Item i2 = new Item("book", 10.5);
+        List<Item> l = new ArrayList<>();
+        l.add(i1);
+        l.add(i2);
+        
+        InvoiceManager manager = new InvoiceManagerImpl();
+        
+        Invoice n = new Invoice();
+        n.setBillFrom(new Person("Philipppp", "Slovakia"));
+        Person per = new Person("Tommmmm", "address");
+        n.setType(InvoiceType.INCOME);
+        n.setBillTo(per);
+        n.setItems(l);
+        n.setIssueDate(LocalDate.of(1980, Month.MARCH, 10));
+        n.setDueDate(LocalDate.of(2015, Month.MARCH, 05));
+        
+        Item i3 = new Item("pen", 3.0);
+        l.add(i3);
+        Invoice inn = new Invoice();
+        inn.setBillFrom(new Person("Philip", "Slovakia"));
+        Person personn = new Person("Tom", "address");
+        inn.setType(InvoiceType.EXPENSE);
+        inn.setBillTo(personn);
+        inn.setItems(l);
+        inn.setIssueDate(LocalDate.of(1980, Month.MARCH, 11));
+        inn.setDueDate(LocalDate.of(2015, Month.MARCH, 05));
+
+        Invoice ii = new Invoice();
+        ii.setBillFrom(new Person("Me", "A"));
+        Person pperso = new Person("You", "B");
+        ii.setBillTo(pperso);
+        ii.setType(InvoiceType.EXPENSE);
+        ii.setIssueDate(LocalDate.of(2016, Month.MARCH, 10));
+        ii.setDueDate(LocalDate.of(2015, Month.MARCH, 30));
+        
+        manager.createInvoice(in);
+        manager.createInvoice(i);
+        manager.createInvoice(n);
+        manager.createInvoice(ii);
+        manager.createInvoice(inn);
     }
 
 }

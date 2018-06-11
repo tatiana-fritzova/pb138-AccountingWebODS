@@ -1,3 +1,5 @@
+package backend;
+
 import exceptions.IllegalEntityException;
 import java.io.IOException;
 import java.util.List;
@@ -60,6 +62,7 @@ public interface InvoiceManager {
 
     /**
      * Exports history of all invoices to a pdf file.
+     * @param year year of invoices to export to pdf
      */
-    void exportToPdf();
+    void exportToPdf(int year);
 }
