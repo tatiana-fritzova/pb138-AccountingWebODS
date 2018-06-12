@@ -30,9 +30,13 @@
             <input ng-repeat="x in products" name="{{x[0]}}Pieces" value="{{x[2]}}" hidden>
         </div>
 
-        <button type="submit" class="btn btn-primary">
-            <h4 id="create">New Invoice</h4>
-        </button>
+        <div class="row">
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">
+                    <h4 id="create">New Invoice</h4>
+                </button>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-md-6">
@@ -59,60 +63,70 @@
         </div>
     </form>
 
-        <h4>Items</h4>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Items</div>
+        <div class="panel-body">
         <div class="row">
+            <%--<span class="glyphicon glyphicon-search" aria-hidden="true"></span>--%>
+            <%--<div class="input-group">--%>
+                <%--<span class="input-group-addon"><i class="material-icons">description</i></span>--%>
+                <%--<input ng-model="item" type="text" id="description" class="form-control" name="itemDescription" placeholder="Description">--%>
+            <%--</div>--%>
+
             <div class="col-sm-6">
                 <div class="input-group">
-                    <span class="input-group-addon"><i class="material-icons">description</i></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></span>
                     <input ng-model="item" type="text" id="description" class="form-control" name="itemDescription" placeholder="Description">
                 </div>
             </div>
             <div class="col-sm-2">
                 <div class="input-group">
-                    <span class="input-group-addon"><i class="material-icons">euro_symbol</i></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-euro" aria-hidden="true"></span></span>
                     <input ng-model="price" type="number" id="price" class="form-control" name="itemPrice" placeholder="Price"
                            min="0" max="100" step="0.01">
                 </div>
             </div>
             <div class="col-sm-2">
                 <div class="input-group">
-                    <span class="input-group-addon"><i class="material-icons">exposure</i></span>
+                    <span class="input-group-addon glyphicon glyphicon-resize-vertical"></span>
                     <input ng-model="pieces" type="number" id="pieces" class="form-control" name="itemPrice" min="0" placeholder="Pieces">
                 </div>
             </div>
             <div class="col-sm-2">
                 <button ng-click="addItem()" type="button" class="btn btn-info" >
-                    <i class="material-icons">add</i>
+                    <%--<i class="material-icons">add</i>--%>
+                    <span class="glyphicon glyphicon-plus-sign"></span>
                 </button>
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-12">
-                <div class="table-responsive"></div>
+                <div class="table-responsive" id="tableOfItems"></div>
                 <table class="table table-hover">
                     <thead>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Pieces</th>
-                    <th></th>
+                    <th class="col-md-6">Description</th>
+                    <th class="col-md-2">Price</th>
+                    <th class="col-md-2">Pieces</th>
+                    <th class="col-md-2">Remove</th>
                     </thead>
                     <tbody>
                     <tr ng-repeat="x in products">
-                        <td>{{x[0]}}</td>
-                        <td>{{x[1]}}</td>
-                        <td>{{x[2]}} </td>
-                        <td><span ng-click="removeItem($index)">×</span></td>
+                        <td class="col-md-6">{{x[0]}}</td>
+                        <td class="col-md-2">{{x[1]}} €</td>
+                        <td class="col-md-2">{{x[2]}}</td>
+                        <td class="col-md-2"><span ng-click="removeItem($index)" class="glyphicon glyphicon-minus-sign"></span></td>
                     </tr>
                     </tbody>
                 </table>
-                <%--<input ng-model="item" type="text">--%>
-                <%--<input ng-model="price" type="number" default="0">--%>
-                <%--<input ng-model="pieces" type="number" min="1">--%>
-                <%--<button ng-click="addItem()">Add item</button>--%>
-                <p>Total: {{sum}}</p>
+
             </div>
         </div>
+        </div>
+        <div class="panel-footer">Total: {{sum}} €</div>
+    </div>
+
 </div>
 
 </div>
@@ -121,11 +135,12 @@
 <script>
     var app = angular.module("itemList", []);
     app.controller("myCtrl", function($scope) {
-        $scope.products = [["Milk",20,1],["Bread",15,1],["Cheese",25,1]];
-        $scope.names = ["Milk","Bread","Cheese"];
-        $scope.sum = 60;
+        $scope.products = [];
+        $scope.names = [];
+        $scope.sum = 0;
         $scope.addItem = function () {
-            if (!$scope.item | !$scope.price | !$scope.pieces) {
+            document.getElementById("tableOfItems").style.display = "block";
+            if (!$scope.item || !$scope.price || !$scope.pieces) {
                 alert("All fields describing item must be filled.");
                 return;
             }
