@@ -9,6 +9,7 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -39,7 +40,7 @@ public class Creator {
 
     public static void createOds() throws IOException, IllegalEntityException {
 
-        List<Invoice> list = new ArrayList();
+      /*  List<Invoice> list = new ArrayList();
         List<Item> items = new ArrayList();
         Item itemOne = new Item("Computer", 500.0);
         Item itemTwo = new Item("Headphones", 15.50);
@@ -107,6 +108,14 @@ public class Creator {
         manager.createInvoice(n);
         manager.createInvoice(ii);
         manager.createInvoice(inn);
+    */
+      InvoiceManager manager = new InvoiceManagerImpl();
+      Map<Integer, List<Invoice>> map = manager.sheetToMap();
+      for (int year : map.keySet()){
+          System.out.println(year);
+          for (Invoice i : map.get(year)){
+              System.out.println(i.toString());
+          }
+      }
     }
-
 }
