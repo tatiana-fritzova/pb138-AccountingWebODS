@@ -3,6 +3,7 @@ package backend;
 import exceptions.IllegalEntityException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface InvoiceManager {
 
@@ -65,4 +66,15 @@ public interface InvoiceManager {
      * @param year year of invoices to export to pdf
      */
     void exportToPdf(int year);
+    
+    /**
+     * Exports every invoice existing to pdf.
+     */
+    void exportAllToPfd();
+    
+    /**
+     * Reads sheets and adds invoices to map.
+     * @throws IOException
+     */
+    Map<Integer, List<Invoice>>  sheetToMap() throws IOException;
 }
