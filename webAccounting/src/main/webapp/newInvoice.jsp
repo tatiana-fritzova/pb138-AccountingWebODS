@@ -20,7 +20,7 @@
 <body>
 <jsp:include page="navbar.jsp"/>
 <div class="container">
-    <form action="/addInvoice" method="post" name="createForm">
+    <form action="${pageContext.request.contextPath}/newInvoice" method="post" name="createForm" id="createForm">
 
         <button type="submit" class="btn btn-primary">
             <h4 id="create">New Invoice</h4>
@@ -30,8 +30,8 @@
             <div class="col-md-6">
                 <label class="control-label" for="sel1">Invoice type:</label>
                 <select class="form-control" id="sel1">
-                    <option>Expense</option>
-                    <option>Income</option>
+                    <option value="expense">Expense</option>
+                    <option value="income">Income</option>
                 </select>
             </div>
             <div class="form-group col-md-6">
@@ -77,16 +77,22 @@
             </div>
         </div>
     </form>
-    <table class="table table-hover" id="items" style="display: none;">
-        <thead>
-        <tr>
-            <td>Description</td>
-            <td>Price per item</td>
-            <td>Pieces</td>
-        </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table table-hover table-responsive" id="items" style="display: none; width: 100%">
+                <thead>
+                <tr>
+                    <td>Description</td>
+                    <td>Price per item</td>
+                    <td>Pieces</td>
+                    <%--https://stackoverflow.com/questions/22731145/calculating-sum-of-repeated-elements-in-angularjs-ng-repeat?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa--%>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </div>
+    </div>
 </div>
 
 <script>
@@ -95,7 +101,7 @@
         var pieces = document.getElementById("pieces").value;
         var price = document.getElementById("price").value;
         if (description === "" || pieces === "" || price==="") {
-            alert("dkfjslkdjf");
+            alert("empty fields not allowed");
             return;
         }
         document.getElementById("items").style.display = "block";

@@ -5,7 +5,9 @@
   Time: 15:09
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=utf-8" pageEncoding="UTF-8" %>
+<%@page contentType="text/html;charset=utf-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
     <title>Accounting - View Invoices</title>
@@ -18,6 +20,18 @@
           rel="stylesheet">
 </head>
 <body>
+<h1>
+<c:when test="${empty invoices}}">
+    <div class="alert alert-danger">
+        <strong>Info!</strong> no invoices
+    </div>
+</c:when>
+<c:otherwise>
+    <div class="alert alert-info">
+        <strong>Info!</strong> there are some invoices
+    </div>
+</c:otherwise>
+</h1>
 <jsp:include page="navbar.jsp"/>
 <div class="container" align="center">
     <h1>Accounting history</h1>
