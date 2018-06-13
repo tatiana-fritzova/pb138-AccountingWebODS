@@ -50,7 +50,9 @@ public class PdfExporter {
             fileOutputStream = new FileOutputStream(outFile);
             this.writer = PdfWriter.getInstance(pdf, fileOutputStream);
             pdf.addWriter(writer);
+            System.out.println("done1");
         } catch (FileNotFoundException | DocumentException ex) {
+             System.out.println("done2");
             Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         document.open();

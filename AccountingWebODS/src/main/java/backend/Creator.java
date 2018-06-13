@@ -43,6 +43,7 @@ public class Creator {
         Person owner = new Person("Larry","Hronsek");        
         InvoiceManager manager = new InvoiceManagerImpl();
         manager.setOwner(owner);
+        manager.sheetToMap();
 
         List<Invoice> list = new ArrayList();
         List<Item> items = new ArrayList();
@@ -64,8 +65,9 @@ public class Creator {
         i.setType(InvoiceType.INCOME);
         list.add(i);
         list.add(in);
-        PdfExporter e = new PdfExporter();
-      //  e.export(list, 2017);
+        manager.exportAllToPfd();
+        //manager.exportToPdf(2015);
+
 
         Item i1 = new Item("tv", 500.0);
         Item i2 = new Item("book", 10.5);
