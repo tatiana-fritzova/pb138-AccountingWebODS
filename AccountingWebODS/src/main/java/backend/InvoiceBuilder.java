@@ -13,10 +13,6 @@ public class InvoiceBuilder {
     private List<Item> items;
     private InvoiceType type;
 
-    public InvoiceBuilder id(Long id){
-        this.id = id;
-        return this;
-    }
     
     public InvoiceBuilder type(InvoiceType type){
         this.type = type;
@@ -51,7 +47,7 @@ public class InvoiceBuilder {
 
     public Invoice build() throws IOException {
         Invoice invoice = new Invoice();
-        invoice.setId(id);
+
         invoice.setBillFrom(billFrom);
         invoice.setBillTo(billTo);        
         invoice.setIssueDate(issueDate);
