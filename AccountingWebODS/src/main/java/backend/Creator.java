@@ -39,8 +39,12 @@ public class Creator {
     }
 
     public static void createOds() throws IOException, IllegalEntityException {
+        
+        Person owner = new Person("Larry","Hronsek");        
+        InvoiceManager manager = new InvoiceManagerImpl();
+        manager.setOwner(owner);
 
-      /*  List<Invoice> list = new ArrayList();
+        List<Invoice> list = new ArrayList();
         List<Item> items = new ArrayList();
         Item itemOne = new Item("Computer", 500.0);
         Item itemTwo = new Item("Headphones", 15.50);
@@ -48,8 +52,6 @@ public class Creator {
         items.add(itemOne);
         Invoice in = new Invoice();
         in.setBillTo(new Person("Philip Smith", "Ulica mieru 23 01841 Ilava"));
-        Person person = new Person("Katarina Matusova", "Pod Hajom 167 01841 Dubnica nad Vahom");
-        in.setBillFrom(person);
         in.setIssueDate(LocalDate.of(2015, Month.MARCH, 21));
         in.setDueDate(LocalDate.of(2015, Month.MARCH, 10));
         in.setItems(items);
@@ -57,15 +59,13 @@ public class Creator {
 
         Invoice i = new Invoice();
         i.setBillFrom(new Person("Me", "A"));
-        Person perso = new Person("You", "B");
-        i.setBillTo(perso);
         i.setIssueDate(LocalDate.of(2018, Month.APRIL, 05));
         i.setDueDate(LocalDate.of(2018, Month.MAY, 30));
         i.setType(InvoiceType.INCOME);
         list.add(i);
         list.add(in);
         PdfExporter e = new PdfExporter();
-        e.export(list, 2017);
+      //  e.export(list, 2017);
 
         Item i1 = new Item("tv", 500.0);
         Item i2 = new Item("book", 10.5);
@@ -73,13 +73,9 @@ public class Creator {
         l.add(i1);
         l.add(i2);
         
-        InvoiceManager manager = new InvoiceManagerImpl();
-        
         Invoice n = new Invoice();
         n.setBillFrom(new Person("Philipppp", "Slovakia"));
-        Person per = new Person("Tommmmm", "address");
         n.setType(InvoiceType.INCOME);
-        n.setBillTo(per);
         n.setItems(l);
         n.setIssueDate(LocalDate.of(1980, Month.MARCH, 10));
         n.setDueDate(LocalDate.of(2015, Month.MARCH, 05));
@@ -87,7 +83,6 @@ public class Creator {
         Item i3 = new Item("pen", 3.0);
         l.add(i3);
         Invoice inn = new Invoice();
-        inn.setBillFrom(new Person("Philip", "Slovakia"));
         Person personn = new Person("Tom", "address");
         inn.setType(InvoiceType.EXPENSE);
         inn.setBillTo(personn);
@@ -96,7 +91,6 @@ public class Creator {
         inn.setDueDate(LocalDate.of(2015, Month.MARCH, 05));
 
         Invoice ii = new Invoice();
-        ii.setBillFrom(new Person("Me", "A"));
         Person pperso = new Person("You", "B");
         ii.setBillTo(pperso);
         ii.setType(InvoiceType.EXPENSE);
@@ -108,7 +102,7 @@ public class Creator {
         manager.createInvoice(n);
         manager.createInvoice(ii);
         manager.createInvoice(inn);
-    */
+    /*
       InvoiceManager manager = new InvoiceManagerImpl();
       Map<Integer, List<Invoice>> map = manager.sheetToMap();
       for (int year : map.keySet()){
@@ -117,5 +111,5 @@ public class Creator {
               System.out.println(i.toString());
           }
       }
-    }
+    */}
 }

@@ -17,14 +17,21 @@ import org.slf4j.LoggerFactory;
 public class InvoiceManagerImpl implements InvoiceManager {
 
     private final Map<Integer, List<Invoice>> invoices;
+    private Person owner;
     private final static org.slf4j.Logger log = LoggerFactory.getLogger(InvoiceManagerImpl.class);
 
     public InvoiceManagerImpl() {
         this.invoices = new HashMap<>();
     }
 
-    public InvoiceManagerImpl(Map<Integer, List<Invoice>> invoices) {
-        this.invoices = invoices;
+    @Override
+    public void setOwner(Person person) {
+        this.owner = person;
+    }
+
+    @Override
+    public Person getOwner() {
+        return owner;
     }
 
     @Override
@@ -61,6 +68,9 @@ public class InvoiceManagerImpl implements InvoiceManager {
         if (invoice == null) {
             throw new IllegalEntityException("Invoice cannot be null");
         }
+        if (owner == null) {
+            throw new IllegalEntityException("Owner cannot be null");
+        }
         File file = new File("evidence.ods");
         SpreadSheet ss = SpreadSheet.createFromFile(file);
 
@@ -93,17 +103,19 @@ public class InvoiceManagerImpl implements InvoiceManager {
             totalPrice += i.getPrice();
         }
         sheet.getCellAt("B" + row).setValue(invoice.getType());
-        sheet.getCellAt("C" + row).setValue(invoice.getBillFrom().getName());
-        sheet.getCellAt("D" + row).setValue(invoice.getBillFrom().getAddress());
-
-        sheet.getCellAt("E" + row).setValue(invoice.getBillTo().getName());
-        sheet.getCellAt("F" + row).setValue(invoice.getBillTo().getAddress());
 
         sheet.getCellAt("G" + row).setValue(invoice.getIssueDate());
         sheet.getCellAt("H" + row).setValue(invoice.getDueDate());
 
-        // also updates total value, total income and total expenses, doriesit ukladanie itemov
+        // also updates total value, total income and total expenses, billTo and billFrom
         if (invoice.getType() == InvoiceType.EXPENSE) {
+            
+            sheet.getCellAt("C" + row).setValue(owner.getName());
+            sheet.getCellAt("D" + row).setValue(owner.getAddress());
+
+            sheet.getCellAt("E" + row).setValue(invoice.getBillTo().getName());
+            sheet.getCellAt("F" + row).setValue(invoice.getBillTo().getAddress());
+
             sheet.getCellAt("I" + row).setValue((-1) * totalPrice);
 
             double newTotalValue = Double.parseDouble(sheet.getCellAt(1, 0).getValue().toString()) - totalPrice;
@@ -112,6 +124,13 @@ public class InvoiceManagerImpl implements InvoiceManager {
             double newTotalExpenses = Double.parseDouble(sheet.getCellAt(3, 0).getValue().toString()) + totalPrice;
             sheet.getCellAt(3, 0).setValue(newTotalExpenses);
         } else {
+            
+            sheet.getCellAt("C" + row).setValue(invoice.getBillFrom().getName());
+            sheet.getCellAt("D" + row).setValue(invoice.getBillFrom().getAddress());
+
+            sheet.getCellAt("E" + row).setValue(owner.getName());
+            sheet.getCellAt("F" + row).setValue(owner.getAddress());
+            
             sheet.getCellAt("I" + row).setValue(totalPrice);
             double newTotalValue = Double.parseDouble(sheet.getCellAt(1, 0).getValue().toString()) + totalPrice;
             sheet.getCellAt(1, 0).setValue(newTotalValue);
@@ -123,16 +142,6 @@ public class InvoiceManagerImpl implements InvoiceManager {
     }
 
     private void addItems(Invoice invoice, int row, Sheet sheet) {
-        /* int column = 8;
-        for (Item item : invoice.getItems()){
-            if (sheet.getColumnCount() <= column){
-                sheet.ensureColumnCount(column + 2);
-            }
-            System.out.println(item.getDescription() + item.getPrice() + " " + column + " " + row);
-            sheet.getCellAt(column - 1, row).setValue(item.getDescription());
-            sheet.getCellAt(column, row).setValue(item.getPrice());
-            column += 2;
-        }  */
         String items = "";
         for (Item item : invoice.getItems()) {
             items += item.getDescription() + ":" + item.getPrice() + "; ";
@@ -199,7 +208,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
         return Double.parseDouble(getCurrentSheet().getCellAt("F0").getTextValue());
     }
 
-    public double GetExpenseBalance() throws IOException {
+    public double getExpenseBalance() throws IOException {
         return Double.parseDouble(getCurrentSheet().getCellAt("D0").getTextValue());
     }
 
@@ -264,14 +273,14 @@ public class InvoiceManagerImpl implements InvoiceManager {
     }
 
     @Override
-    public Map<Integer, List<Invoice>>  sheetToMap() throws IOException {
+    public Map<Integer, List<Invoice>> sheetToMap() throws IOException {
         File file = new File("evidence.ods");
         SpreadSheet spreadSheet = SpreadSheet.createFromFile(file);
 
         for (int i = 0; i < spreadSheet.getSheetCount(); i++) {
             Sheet sheet = spreadSheet.getSheet(i);
             int year = Integer.parseInt(sheet.getName());
-            
+
             for (int row = 2; row < sheet.getRowCount(); row++) {
                 Invoice invoice = new Invoice();
 
@@ -300,15 +309,15 @@ public class InvoiceManagerImpl implements InvoiceManager {
                 //set issueDate and dueDate
                 String issueDate = sheet.getCellAt(6, row).getValue().toString();
                 invoice.setIssueDate(LocalDate.parse(issueDate));
-                
+
                 String dueDate = sheet.getCellAt(7, row).getValue().toString();
                 invoice.setDueDate(LocalDate.parse(dueDate));
-                
+
                 //set Items
                 List<Item> allItems = new ArrayList<>();
                 String itemString = sheet.getCellAt(9, row).getValue().toString();
                 String[] items = itemString.split(";");
-                for (int j = 0; j < items.length - 1; j++){
+                for (int j = 0; j < items.length - 1; j++) {
                     String[] nameAndPrice = items[j].split(":");
                     String description = nameAndPrice[0].trim();
                     double price = Double.parseDouble(nameAndPrice[1]);
@@ -316,7 +325,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
                     allItems.add(item);
                 }
                 invoice.setItems(allItems);
-                
+
                 List<Invoice> yearlyInvoices = invoices.get(year);
                 if (yearlyInvoices == null) {
                     yearlyInvoices = new ArrayList<>();

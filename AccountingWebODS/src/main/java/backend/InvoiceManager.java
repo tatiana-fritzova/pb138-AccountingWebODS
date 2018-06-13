@@ -6,6 +6,18 @@ import java.util.List;
 import java.util.Map;
 
 public interface InvoiceManager {
+    
+    /**
+     * Method sets an owner.
+     * @param person owner
+     */
+    void setOwner(Person person);
+
+    /**
+     * Method returns the owner.
+     * @return owner
+     */
+    Person getOwner();
 
     /**
      * Creates new sheet for an upcoming year.
