@@ -24,14 +24,10 @@ public class StartListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        try {
-            ServletContext servletContext = servletContextEvent.getServletContext();
-            InvoiceManager invoiceManager = new InvoiceManagerImpl();
-            invoiceManager.setOwner(new Person("my name", "my address"));
-            servletContext.setAttribute("invoiceManager", invoiceManager);
-        } catch (IOException ex) {
-            java.util.logging.Logger.getLogger(StartListener.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ServletContext servletContext = servletContextEvent.getServletContext();
+        InvoiceManager invoiceManager = new InvoiceManagerImpl();
+        invoiceManager.setOwner(new Person("my name", "my address"));
+        servletContext.setAttribute("invoiceManager", invoiceManager);
     }
 
     @Override
