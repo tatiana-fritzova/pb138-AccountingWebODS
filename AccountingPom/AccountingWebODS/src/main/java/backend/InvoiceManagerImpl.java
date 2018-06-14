@@ -50,6 +50,9 @@ public class InvoiceManagerImpl implements InvoiceManager {
                 Sheet sheet = ss.getSheet("OwnerInfo");
                 sheet.getCellAt("B" + 2).setValue(person.getName());
                 sheet.getCellAt("B" + 3).setValue(person.getAddress());
+                saveFile(sheet);
+            } else {
+                addOwnerSheet(ss);
             }
         } catch (IOException ex) {
             Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);

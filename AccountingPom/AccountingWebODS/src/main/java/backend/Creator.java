@@ -100,7 +100,7 @@ public class Creator {
         ii.setDueDate(LocalDate.of(2015, Month.MARCH, 30));
 
         // manager.createInvoice(in);
-        System.out.println(manager.getCurrentBalance());
+        
         /*   manager.createInvoice(i);
         manager.createInvoice(n);
         manager.createInvoice(ii);
@@ -125,5 +125,7 @@ public class Creator {
         for (Invoice invc : all) {
             System.out.println(invc.getType());
         }
+        
+        System.out.println(manager.getCurrentBalance());
     }
 }
