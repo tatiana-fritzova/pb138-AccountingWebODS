@@ -93,8 +93,15 @@ public class InvoiceManagerImpl implements InvoiceManager {
         if (ss.getSheet("OwnerInfo") == null) {
             addOwnerSheet(ss);
         }
-
         int year = invoice.getIssueDate().getYear();
+        
+        List<Invoice> yearlyInvoices = invoices.get(year);
+        if (yearlyInvoices == null) {
+            yearlyInvoices = new ArrayList<>();
+        }
+        yearlyInvoices.add(invoice);
+        invoices.put(year, yearlyInvoices);
+        
         if (ss.getSheet(String.valueOf(year)) == null) {
             newYearSheet(year);
         }
@@ -106,13 +113,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
         sheet.ensureRowCount(row);
         addRow(invoice, row, sheet);
         saveFile(sheet);
-        List<Invoice> yearlyInvoices = invoices.get(year);
-        if (yearlyInvoices == null) {
-            yearlyInvoices = new ArrayList<>();
-        }
-        yearlyInvoices.add(invoice);
-        invoices.put(year, yearlyInvoices);
-        saveFile(sheet);
+        
     }
 
     private void addRow(Invoice invoice, int row, Sheet sheet) {
@@ -255,15 +256,15 @@ public class InvoiceManagerImpl implements InvoiceManager {
 
     @Override
     public double getCurrentBalance() throws IOException {
-        return Double.parseDouble(getCurrentSheet().getCellAt("B0").getTextValue());
+        return Double.parseDouble(getCurrentSheet().getCellAt(1, 0).getValue().toString());
     }
 
     public double getIncomeBalance() throws IOException {
-        return Double.parseDouble(getCurrentSheet().getCellAt("F0").getTextValue());
+        return Double.parseDouble(getCurrentSheet().getCellAt(5, 0).getValue().toString());
     }
 
     public double getExpenseBalance() throws IOException {
-        return Double.parseDouble(getCurrentSheet().getCellAt("D0").getTextValue());
+        return Double.parseDouble(getCurrentSheet().getCellAt(3, 0).getValue().toString());
     }
 
     @Override

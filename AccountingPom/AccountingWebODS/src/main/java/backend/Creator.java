@@ -1,6 +1,5 @@
 package backend;
 
-
 import exceptions.IllegalEntityException;
 import java.io.File;
 import java.io.IOException;
@@ -39,14 +38,13 @@ public class Creator {
     }
 
     public static void createOds() throws IOException, IllegalEntityException {
-        
-        Person owner = new Person("Larry","Hronsek");        
-        InvoiceManager manager = new InvoiceManagerImpl();
-       
-        manager.setOwner(owner);
-        manager.sheetToMap();
 
-        List<Invoice> list = new ArrayList();
+        Person owner = new Person("Larry", "Hronsek");
+        InvoiceManager manager = new InvoiceManagerImpl();
+
+        manager.setOwner(owner);
+
+      //  List<Invoice> list = new ArrayList();
         List<Item> items = new ArrayList();
         Item itemOne = new Item("Computer", 500.0);
         Item itemTwo = new Item("Headphones", 15.50);
@@ -54,7 +52,7 @@ public class Creator {
         items.add(itemOne);
         Invoice in = new Invoice();
         in.setBillTo(new Person("Philip Smith", "Ulica mieru 23 01841 Ilava"));
-        in.setIssueDate(LocalDate.of(2015, Month.MARCH, 21));
+        in.setIssueDate(LocalDate.of(2015, Month.MARCH, 01));
         in.setDueDate(LocalDate.of(2015, Month.MARCH, 10));
         in.setItems(items);
         in.setType(InvoiceType.EXPENSE);
@@ -64,27 +62,26 @@ public class Creator {
         i.setIssueDate(LocalDate.of(2018, Month.APRIL, 05));
         i.setDueDate(LocalDate.of(2018, Month.MAY, 30));
         i.setType(InvoiceType.INCOME);
-        list.add(i);
-        list.add(in);
+       // list.add(i);
+     //   list.add(in);
 
-        //manager.createInvoice(in);
-        manager.exportAllToPfd();
-       // manager.exportToPdf(2015);
-
+        manager.createInvoice(in);
+        // manager.exportAllToPfd();
+        // manager.exportToPdf(2015);
 
         Item i1 = new Item("tv", 500.0);
         Item i2 = new Item("book", 10.5);
         List<Item> l = new ArrayList<>();
         l.add(i1);
         l.add(i2);
-        
+
         Invoice n = new Invoice();
         n.setBillFrom(new Person("Philipppp", "Slovakia"));
         n.setType(InvoiceType.INCOME);
         n.setItems(l);
         n.setIssueDate(LocalDate.of(1980, Month.MARCH, 10));
-        n.setDueDate(LocalDate.of(2015, Month.MARCH, 05));
-        
+        n.setDueDate(LocalDate.of(2015, Month.MARCH, 15));
+
         Item i3 = new Item("pen", 3.0);
         l.add(i3);
         Invoice inn = new Invoice();
@@ -92,36 +89,41 @@ public class Creator {
         inn.setType(InvoiceType.EXPENSE);
         inn.setBillTo(personn);
         inn.setItems(l);
-        inn.setIssueDate(LocalDate.of(1980, Month.MARCH, 11));
+        inn.setIssueDate(LocalDate.of(1980, Month.MARCH, 01));
         inn.setDueDate(LocalDate.of(2015, Month.MARCH, 05));
 
         Invoice ii = new Invoice();
         Person pperso = new Person("You", "B");
         ii.setBillTo(pperso);
         ii.setType(InvoiceType.EXPENSE);
-        ii.setIssueDate(LocalDate.of(2016, Month.MARCH, 10));
+        ii.setIssueDate(LocalDate.of(2014, Month.MARCH, 10));
         ii.setDueDate(LocalDate.of(2015, Month.MARCH, 30));
-        
-        manager.createInvoice(in);
-        manager.createInvoice(i);
+
+        // manager.createInvoice(in);
+        System.out.println(manager.getCurrentBalance());
+        /*   manager.createInvoice(i);
         manager.createInvoice(n);
         manager.createInvoice(ii);
         manager.createInvoice(inn);
         //System.out.println(manager.findAllIncomes(1980));
         //manager.exportToPdf(1980);
-    /*
-      InvoiceManager manager = new InvoiceManagerImpl();
-      Map<Integer, List<Invoice>> map = manager.sheetToMap();
-      for (int year : map.keySet()){
-          System.out.println(year);
-          for (Invoice i : map.get(year)){
-              System.out.println(i.toString());
-          }
-      }
-        
+         */
+        // InvoiceManager manager = new InvoiceManagerImpl();
+       /* for (int year : map.keySet()) {
+            System.out.println(year);
+            for (Invoice invcc : map.get(year)) {
+                System.out.println(invcc.toString());
+            }
+        }*//*
+       for (int year : map.keySet()) {
+            System.out.println(year);
+            for (Invoice invcc : map.get(year)) {
+                System.out.println(invcc.toString());
+            }*/
+
         List<Invoice> all = manager.findAllInvoices();
-        for (Invoice invc : all){
+        for (Invoice invc : all) {
             System.out.println(invc.getType());
-        }*/
+        }
     }
 }
