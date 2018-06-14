@@ -141,7 +141,7 @@
     </div>
 
 </div>
-<h1><c:out value="${invoiceToString}"/></h1>
+<p><c:out value="${invoices}"/></p>
 
 <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 <script>

@@ -1,6 +1,7 @@
 package servlets;
 
 import backend.Invoice;
+import backend.InvoiceManager;
 import backend.InvoiceManagerImpl;
 import backend.Item;
 
@@ -24,13 +25,14 @@ public class ListInvoicesServlet extends HttpServlet {
     private static final String LIST_JSP = "/viewInvoices.jsp";
     public static final String URL_MAPPING = "/viewInvoices";
 
-    // LOGOVANIE NEFUGNUJE :( !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // DO GET NEZBEHNE HNED
+    private InvoiceManager getInvoiceManager() {
+        return (InvoiceManager) getServletContext().getAttribute("invoiceManager");
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        request.setAttribute("invoiceManager", new InvoiceManagerImpl());
-        request.setAttribute("seznam", Arrays.asList("mléko", "rohlíky", "salám"));
+        request.setAttribute("invoices", getInvoiceManager().findAllInvoices());
+        request.setAttribute("string", getInvoiceManager().findAllInvoices().toString());
         try {
             request.getRequestDispatcher(LIST_JSP).forward(request, response);
         } catch (ServletException | IOException e) {

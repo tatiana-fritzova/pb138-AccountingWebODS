@@ -23,66 +23,53 @@
 <jsp:include page="navbar.jsp"/>
 <div class="container" align="center">
     <h1>List of invoices</h1>
-    <c:choose>
-        <c:when test="${not empty noinvoices}}">
-            <div class="alert alert-danger">
-                <strong>Info!</strong> no invoices
-            </div>
-        </c:when>
-        <c:otherwise>
-            <div class="container">
-                <div class="row">
-                <input class="form-control col-md-6" id="searchInput" type="text" placeholder="Search...">
-                </div>
-                <div class="row">
-                <br>
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>Person</th>
-                        <th>Items</th>
-                        <th>Issue date</th>
-                        <th>Due date</th>
-                        <th>Total amount</th>
-                    </tr>
-                    </thead>
-                    <tbody id="itemsTable">
-                    <tr>
-                        <td>INCOME</td>
-                        <td>Tana, Brno</td>
-                        <td>pineapples</td>
-                        <td>2018-01-01</td>
-                        <td>2018-01-02</td>
-                        <td>5e</td>
-                    </tr>
-                    <tr>
-                        <td>INCOME</td>
-                        <td>Sona, Sahy</td>
-                        <td>pizza</td>
-                        <td>2018-01-01</td>
-                        <td>2018-01-03</td>
-                        <td>6e</td>
-                    </tr>
-                    </tbody>
-                </table>
-                </div>
+    <div class="container">
+        <input class="form-control col-md-6" id="searchInput" type="text" placeholder="Search...">
+        <br>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Type</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Items</th>
+                <th>Issue date</th>
+                <th>Due date</th>
+                <th>Total amount</th>
+            </tr>
+            </thead>
+            <tbody id="itemsTable">
+            <c:forEach items="${invoices}" var="invoice">
+                <tr>
+                    <td><c:out value="${invoice.type}"/></td>
+                    <td><c:out value="${invoice.billFrom.name}"/>, <c:out value="${invoice.billFrom.address}"/></td>
+                    <td><c:out value="${invoice.billTo.name}"/>, <c:out value="${invoice.billTo.address}"/></td>
+                    <td>
+                        <c:forEach items="${invoice.items}" var="item">
+                            <c:out value="${item.description}"/> (<c:out value="${item.price}"/> EUR) <br>
+                        </c:forEach>
+                    </td>
+                    <td><c:out value="${invoice.issueDate}"/></td>
+                    <td><c:out value="${invoice.dueDate}"/></td>
+                    <td><c:out value="${invoice.getTotalAmount()}"/> EUR</td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+        </div>
 
-            </div>
 
-            <script>
-                $(document).ready(function(){
-                    $("#searchInput").on("keyup", function() {
-                        var value = $(this).val().toLowerCase();
-                        $("#itemsTable tr").filter(function() {
-                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                        });
-                    });
+    <script>
+        $(document).ready(function(){
+            $("#searchInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#itemsTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
-            </script>
+            });
+        });
+    </script>
 
-        </c:otherwise>
-    </c:choose>
 
 </div>
 </body>

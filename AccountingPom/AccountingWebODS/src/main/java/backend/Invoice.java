@@ -70,6 +70,14 @@ public class Invoice {
         return issueDate;
     }
 
+    public Double getTotalAmount() {
+        double totalPrice = 0.0;
+        for (Item i : getItems()) {
+            totalPrice += i.getPrice();
+        }
+        return totalPrice;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }

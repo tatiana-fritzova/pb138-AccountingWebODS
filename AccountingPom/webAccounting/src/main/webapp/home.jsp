@@ -31,14 +31,14 @@
     <div class="row center activities">
         <div class="col-md-6">
             <div class="row">
-                <div class="col-sm-6 nav-link"><a href="myProfile.jsp">My profile</a></div>
-                <div class="col-sm-6 nav-link"><a href="newInvoice.jsp">Add new invoice</a></div>
+                <div class="col-sm-6 nav-link"><a href="/myProfile">My profile</a></div>
+                <div class="col-sm-6 nav-link"><a href="/newInvoice">Add new invoice</a></div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="row">
-                <div class="col-sm-6 nav-link"><a href="viewInvoices.jsp">View invoices</a></div>
-                <div class="col-sm-6 nav-link"><a href="export.jsp">Export to PDF</a></div>
+                <div class="col-sm-6 nav-link"><a href="/viewInvoices">View invoices</a></div>
+                <div class="col-sm-6 nav-link"><a href="/export">Export to PDF</a></div>
             </div>
         </div>
     </div>

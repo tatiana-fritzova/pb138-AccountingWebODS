@@ -63,7 +63,7 @@ public class AddInvoiceServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        request.setAttribute("text", request.getQueryString());
+        request.setAttribute("invoices", getInvoiceManager().findAllInvoices().toString());
         try {
             request.getRequestDispatcher(ADD_JSP).forward(request, response);
         } catch (ServletException | IOException e) {
@@ -102,16 +102,13 @@ public class AddInvoiceServlet extends HttpServlet {
         invoice.setBillFrom(invoice.getType().equals(InvoiceType.INCOME) ? person : owner);
         invoice.setIssueDate(LocalDate.parse(issueDate));
         invoice.setDueDate(LocalDate.parse(dueDate));
-        request.setAttribute("invoiceToString", invoice.toString());
+        request.setAttribute("invoiceToString", getInvoiceManager().findAllInvoices().toString());
         try {
             getInvoiceManager().createInvoice(invoice);
             request.setAttribute("success", "Invoice was successfully added.");
         } catch (IllegalEntityException e) {
             request.setAttribute("failure", "Failed to add new invoice." +e.getMessage());
-            request.getRequestDispatcher(ADD_JSP).forward(request, response);
-            return;
         }
-        request.setAttribute("invoiceToString", invoice.toString());
         request.getRequestDispatcher(ADD_JSP).forward(request, response);
 
     }
