@@ -112,7 +112,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
             
             sheet.getCellAt("C" + row).setValue(owner.getName());
             sheet.getCellAt("D" + row).setValue(owner.getAddress());
-
+            invoice.setBillFrom(owner);
             sheet.getCellAt("E" + row).setValue(invoice.getBillTo().getName());
             sheet.getCellAt("F" + row).setValue(invoice.getBillTo().getAddress());
 
@@ -127,7 +127,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
             
             sheet.getCellAt("C" + row).setValue(invoice.getBillFrom().getName());
             sheet.getCellAt("D" + row).setValue(invoice.getBillFrom().getAddress());
-
+            invoice.setBillTo(owner);
             sheet.getCellAt("E" + row).setValue(owner.getName());
             sheet.getCellAt("F" + row).setValue(owner.getAddress());
             
