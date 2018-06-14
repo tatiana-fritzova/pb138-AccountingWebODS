@@ -95,7 +95,7 @@
                         <div class="input-group">
                             <span class="input-group-addon glyphicon glyphicon-euro" aria-hidden="true"></span>
                             <input ng-model="price" type="number" id="price" class="form-control" name="itemPrice" placeholder="Price"
-                                   min="0" max="100" step="0.01">
+                                   min="0" step="0.01">
                         </div>
                     </div>
                     <div class="col-sm-2">

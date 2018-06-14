@@ -32,6 +32,7 @@ public class ListInvoicesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setAttribute("invoices", getInvoiceManager().findAllInvoices());
+        request.setAttribute("balance", getInvoiceManager().getCurrentBalance());
         request.setAttribute("string", getInvoiceManager().findAllInvoices().toString());
         try {
             request.getRequestDispatcher(LIST_JSP).forward(request, response);
@@ -40,8 +41,8 @@ public class ListInvoicesServlet extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.sendRedirect(request.getContextPath()+URL_MAPPING);
-    }
+//    @Override
+//    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//        response.sendRedirect(request.getContextPath()+URL_MAPPING);
+//    }
 }

@@ -24,7 +24,19 @@
 <div class="container" align="center">
     <h1>List of invoices</h1>
     <div class="container">
-        <input class="form-control col-md-6" id="searchInput" type="text" placeholder="Search...">
+        <c:choose>
+            <c:when test="${balance < 0}"><div class="alert alert-danger"></c:when>
+            <c:when test="${balance > 0}"><div class="alert alert-success"></c:when>
+            <c:otherwise><div class="alert alert-info"></c:otherwise>
+        </c:choose>
+            <strong>Current balance: </strong> <c:out value="${balance}"/>
+        </div>
+
+        <div class="input-group">
+            <span class="input-group-addon glyphicon glyphicon-search" aria-hidden="true"></span>
+            <input class="form-control col-md-6" id="searchInput" type="text" placeholder="Search..." autofocus>
+        </div>
+
         <br>
         <table class="table table-hover">
             <thead>
@@ -40,7 +52,9 @@
             </thead>
             <tbody id="itemsTable">
             <c:forEach items="${invoices}" var="invoice">
-                <tr>
+
+                <c:if test="${invoice.type.toString() == 'INCOME'}"><tr class="alert alert-success"></c:if>
+                <c:if test="${invoice.type.toString() == 'EXPENSE'}"><tr class="alert alert-danger"></c:if>
                     <td><c:out value="${invoice.type}"/></td>
                     <td><c:out value="${invoice.billFrom.name}"/>, <c:out value="${invoice.billFrom.address}"/></td>
                     <td><c:out value="${invoice.billTo.name}"/>, <c:out value="${invoice.billTo.address}"/></td>
