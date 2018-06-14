@@ -26,10 +26,6 @@ public class StartListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ServletContext servletContext = servletContextEvent.getServletContext();
         InvoiceManager invoiceManager = new InvoiceManagerImpl();
-        if (invoiceManager.getOwner() == null) {
-            servletContext.setAttribute("noowner", true);
-            invoiceManager.setOwner(new Person( "owner name", "owner address"));
-        }
         servletContext.setAttribute("invoiceManager", invoiceManager);
     }
 

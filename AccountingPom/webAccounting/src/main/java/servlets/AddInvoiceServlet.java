@@ -73,6 +73,11 @@ public class AddInvoiceServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        if (getInvoiceManager().getOwner() == null) {
+            request.setAttribute("noowner", "No owner is set, please fill in required information.");
+            request.getRequestDispatcher("/myProfile").forward(request, response);
+        }
+
         request.setCharacterEncoding("utf-8");
         String action = request.getPathInfo();
 

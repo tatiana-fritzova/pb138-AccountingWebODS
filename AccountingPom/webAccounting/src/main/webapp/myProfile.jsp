@@ -34,6 +34,12 @@
             <strong>Success!</strong> <c:out value="${success}"/>
         </div>
     </c:if>
+    <c:if test="${not empty noowner}">
+        <div class="alert alert-danger alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Failure!</strong> <c:out value="${noowner}"/>
+        </div>
+    </c:if>
     <form class="form-inline" action="${pageContext.request.contextPath}/myProfile" method="post">
         <div class="form-group">
             <label>Full name:</label>
