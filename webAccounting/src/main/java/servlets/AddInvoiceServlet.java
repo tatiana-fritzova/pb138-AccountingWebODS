@@ -27,10 +27,6 @@ public class AddInvoiceServlet extends HttpServlet {
     private static final String ADD_JSP = "/newInvoice.jsp";
     public static final String URL_MAPPING = "/newInvoice";
 
-    private boolean validateParams(String params) {
-        return params != null && params.length() != 0;
-    }
-
     private void defineInvoice(Invoice invoice, String params) {
     }
 
@@ -41,6 +37,7 @@ public class AddInvoiceServlet extends HttpServlet {
     private List<Item> getItems(HttpServletRequest request) {
         Map<String, String[]> parameterMap = request.getParameterMap();
         String[] itemNames = parameterMap.get("itemName");
+        if (itemNames == null) return null;
         List<Item> items = new ArrayList<>();
         for (String itemName : itemNames) {
             Double price = Double.parseDouble((String) request.getParameter(itemName+"Price"));
@@ -52,7 +49,9 @@ public class AddInvoiceServlet extends HttpServlet {
 
     private InvoiceType getType(HttpServletRequest request) {
         String type = request.getParameter("type");
-        return type.equals("expense") ? InvoiceType.EXPENSE :InvoiceType.INCOME;
+        if (type.equals("expense")) return InvoiceType.EXPENSE;
+        if (type.equals("income")) return InvoiceType.INCOME;
+        return null;
     }
 
     private Person getPerson(HttpServletRequest request) {
@@ -64,7 +63,6 @@ public class AddInvoiceServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setAttribute("text", request.getQueryString());
-        PrintWriter out = response.getWriter();
         try {
             request.getRequestDispatcher(ADD_JSP).forward(request, response);
         } catch (ServletException | IOException e) {
@@ -76,23 +74,38 @@ public class AddInvoiceServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.setCharacterEncoding("utf-8");
         String action = request.getPathInfo();
+
         if (!action.equals("/add")) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Unknown action " + action);
+            request.setAttribute("failure", "Unknown action.");
+            request.getRequestDispatcher(ADD_JSP).forward(request, response);
             return;
         }
 
         Invoice invoice = new Invoice();
-        invoice.setItems(getItems(request));
-        invoice.setType(getType(request));
-        invoice.setBillTo(invoice.getType().equals(InvoiceType.EXPENSE) ? getPerson(request) : null);
-        invoice.setBillFrom(invoice.getType().equals(InvoiceType.INCOME) ? getPerson(request) : null);
-        invoice.setIssueDate(LocalDate.parse( request.getParameter("issueDate")));
-        invoice.setDueDate(LocalDate.parse(request.getParameter("dueDate")));
+        List<Item> items = getItems(request);
+        InvoiceType type = getType(request);
+        Person person = getPerson(request);
+        String total = request.getParameter("total");
+        String issueDate = request.getParameter("issueDate");
+        String dueDate = request.getParameter("dueDate");
+        if (items == null || type == null || person == null || total == null ||
+                issueDate == null || dueDate == null) {
+            request.setAttribute("failure", "No items were submitted.");
+            request.getRequestDispatcher(ADD_JSP).forward(request, response);
+            return;
+        }
+        invoice.setItems(items);
+        invoice.setType(type);
+        invoice.setBillTo(invoice.getType().equals(InvoiceType.EXPENSE) ? person : null);
+        invoice.setBillFrom(invoice.getType().equals(InvoiceType.INCOME) ? person : null);
+        invoice.setIssueDate(LocalDate.parse(issueDate));
+        invoice.setDueDate(LocalDate.parse(dueDate));
 
         //total ... to je v invoice co, count?
-        Double total = Double.parseDouble( request.getParameter("total"));
+        Double totalx = Double.parseDouble(total);
 
-        request.setAttribute("path", invoice.toString());
+        request.setAttribute("invoiceToString", invoice.toString());
+        request.setAttribute("success", "Invoice was successfully added.");
 
         request.getRequestDispatcher(ADD_JSP).forward(request, response);
 
