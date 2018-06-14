@@ -3,6 +3,7 @@ package servlets;
 //import org.slf4j.LoggerFactory;
 
 import backend.*;
+import exceptions.IllegalEntityException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,8 +31,8 @@ public class AddInvoiceServlet extends HttpServlet {
     private void defineInvoice(Invoice invoice, String params) {
     }
 
-    private Object getInvoiceManager() {
-        return getServletContext().getAttribute("invoiceManager");
+    private InvoiceManager getInvoiceManager() {
+        return (InvoiceManager) getServletContext().getAttribute("invoiceManager");
     }
 
     private List<Item> getItems(HttpServletRequest request) {
@@ -85,6 +86,7 @@ public class AddInvoiceServlet extends HttpServlet {
         List<Item> items = getItems(request);
         InvoiceType type = getType(request);
         Person person = getPerson(request);
+        Person owner = (Person) getServletContext().getAttribute("owner");
         String total = request.getParameter("total");
         String issueDate = request.getParameter("issueDate");
         String dueDate = request.getParameter("dueDate");
@@ -96,17 +98,20 @@ public class AddInvoiceServlet extends HttpServlet {
         }
         invoice.setItems(items);
         invoice.setType(type);
-        invoice.setBillTo(invoice.getType().equals(InvoiceType.EXPENSE) ? person : null);
-        invoice.setBillFrom(invoice.getType().equals(InvoiceType.INCOME) ? person : null);
+        invoice.setBillTo(invoice.getType().equals(InvoiceType.EXPENSE) ? person : owner);
+        invoice.setBillFrom(invoice.getType().equals(InvoiceType.INCOME) ? person : owner);
         invoice.setIssueDate(LocalDate.parse(issueDate));
         invoice.setDueDate(LocalDate.parse(dueDate));
-
-        //total ... to je v invoice co, count?
-        Double totalx = Double.parseDouble(total);
-
         request.setAttribute("invoiceToString", invoice.toString());
-        request.setAttribute("success", "Invoice was successfully added.");
-
+        try {
+            getInvoiceManager().createInvoice(invoice);
+            request.setAttribute("success", "Invoice was successfully added.");
+        } catch (IllegalEntityException e) {
+            request.setAttribute("failure", "Failed to add new invoice." +e.getMessage());
+            request.getRequestDispatcher(ADD_JSP).forward(request, response);
+            return;
+        }
+        request.setAttribute("invoiceToString", invoice.toString());
         request.getRequestDispatcher(ADD_JSP).forward(request, response);
 
     }

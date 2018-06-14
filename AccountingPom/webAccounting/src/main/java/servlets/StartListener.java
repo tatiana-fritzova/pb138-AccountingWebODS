@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebListener;
 import backend.Invoice;
 import backend.InvoiceManager;
 import backend.InvoiceManagerImpl;
+import backend.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +25,7 @@ public class StartListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ServletContext servletContext = servletContextEvent.getServletContext();
         InvoiceManager invoiceManager = new InvoiceManagerImpl();
+        invoiceManager.setOwner(new Person("my name", "my address"));
         servletContext.setAttribute("invoiceManager", invoiceManager);
     }
 
