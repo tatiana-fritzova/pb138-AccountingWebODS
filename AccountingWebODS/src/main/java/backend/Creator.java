@@ -42,6 +42,7 @@ public class Creator {
         
         Person owner = new Person("Larry","Hronsek");        
         InvoiceManager manager = new InvoiceManagerImpl();
+       
         manager.setOwner(owner);
         manager.sheetToMap();
 
@@ -65,8 +66,10 @@ public class Creator {
         i.setType(InvoiceType.INCOME);
         list.add(i);
         list.add(in);
+
+        //manager.createInvoice(in);
         manager.exportAllToPfd();
-        //manager.exportToPdf(2015);
+       // manager.exportToPdf(2015);
 
 
         Item i1 = new Item("tv", 500.0);
@@ -104,6 +107,8 @@ public class Creator {
         manager.createInvoice(n);
         manager.createInvoice(ii);
         manager.createInvoice(inn);
+        //System.out.println(manager.findAllIncomes(1980));
+        //manager.exportToPdf(1980);
     /*
       InvoiceManager manager = new InvoiceManagerImpl();
       Map<Integer, List<Invoice>> map = manager.sheetToMap();

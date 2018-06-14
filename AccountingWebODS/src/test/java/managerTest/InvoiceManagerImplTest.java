@@ -33,6 +33,7 @@ public class InvoiceManagerImplTest {
 
     private final Person personOne = new Person("Katarina", "Botanicka 45, Brno");
     private final Person personTwo = new Person("Phillip Smith", "Ulica mieru 45, Ilava");
+    private final Person owner = new Person("Katarina Matusova" , "Pod hajom 1366, Dubnica");
     private final Person personEmpty = new Person("", "");
     private final InvoiceManagerImpl manager = new InvoiceManagerImpl();
 
@@ -76,7 +77,9 @@ public class InvoiceManagerImplTest {
     @Test
     public void createInvoice() throws Exception {
         Invoice invoice = sampleInvoiceOne().build();
+        manager.setOwner(owner);
         manager.createInvoice(invoice);
+        
 
         Long invoiceId = invoice.getId();
         assertNotNull(invoiceId);
@@ -109,7 +112,7 @@ public class InvoiceManagerImplTest {
         manager.createInvoice(invoice);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = IllegalEntityException.class)
     public void createInvoiceWithWrongDates() throws Exception {
         Invoice invoice = sampleInvoiceWrongDates().build();
         manager.createInvoice(invoice);

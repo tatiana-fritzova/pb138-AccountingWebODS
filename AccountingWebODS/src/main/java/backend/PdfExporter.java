@@ -133,7 +133,10 @@ public class PdfExporter {
         Chunk text = new Chunk("Name : " + "\t\t", font);
         p.add(text);
         p.setAlignment(Element.ALIGN_CENTER);
+
         Chunk valueName = new Chunk(person.getName(), font);
+
+
         p.add(valueName);
         p.add(Chunk.NEWLINE);
         p.setIndentationLeft(20);
