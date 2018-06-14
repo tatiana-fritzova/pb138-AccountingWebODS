@@ -21,13 +21,20 @@
 <body>
 <jsp:include page="navbar.jsp"/>
 <div ng-app="itemList" ng-controller="myCtrl">
-    <c:if test="${not empty error}">
-        <div class="alert alert-danger">
-            <c:out value="error"/>
-        </div>
-    </c:if>
 
     <div class="container">
+        <c:if test="${not empty failure}">
+            <div class="alert alert-danger alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Failure!</strong> <c:out value="${failure}"/>
+            </div>
+        </c:if>
+        <c:if test="${not empty success}">
+            <div class="alert alert-success alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong> Added new invoice.
+            </div>
+        </c:if>
         <form action="${pageContext.request.contextPath}/newInvoice/add" method="post">
 
             <div id="itemInputs">
@@ -35,7 +42,7 @@
                 <input ng-repeat="x in products" name="{{x[0]}}Price" value="{{x[1]}}" hidden>
                 <input ng-repeat="x in products" name="{{x[0]}}Pieces" value="{{x[2]}}" hidden>
             </div>
-            <input type="number" name="total" value="{{sum}}" hidden>
+            <input type="number" name="total" value="{{sum}}" type="number" hidden>
 
             <div class="row">
                 <div class="col-xs-12">
@@ -45,6 +52,7 @@
                 </div>
             </div>
 
+            <br>
             <div class="row">
                 <div class="col-md-6">
                     <label class="control-label" for="sel1">Invoice type:</label>
@@ -73,8 +81,6 @@
                 </div>
             </div>
         </form>
-
-
         <div class="panel panel-default">
             <div class="panel-heading">Items</div>
             <div class="panel-body">
@@ -100,11 +106,11 @@
                     </div>
                     <div class="col-sm-2">
                         <button ng-click="addItem()" type="button" class="btn btn-info" >
-                            <%--<i class="material-icons">add</i>--%>
-                            <span class="glyphicon glyphicon-plus-sign"></span>
+                            <i class="material-icons">add</i>
                         </button>
                     </div>
                 </div>
+                <br>
 
                 <div class="row">
                     <div class="col-sm-12">
@@ -135,7 +141,7 @@
     </div>
 
 </div>
-<h1><c:out value="${text}"/></h1>
+<h1><c:out value="${invoiceToString}"/></h1>
 
 <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 <script>
