@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: tatiana
@@ -20,22 +21,32 @@
 <body>
 <jsp:include page="navbar.jsp"/>
 <div class="container" align="center">
-    <form action="#">
+    <h1>My profile</h1>
+    <c:if test="${not empty failure}">
+        <div class="alert alert-danger alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Failure!</strong> <c:out value="${failure}"/>
+        </div>
+    </c:if>
+    <c:if test="${not empty success}">
+        <div class="alert alert-success alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Success!</strong> <c:out value="${success}"/>
+        </div>
+    </c:if>
+    <form class="form-inline" action="${pageContext.request.contextPath}/myProfile" method="post">
         <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name">
+            <label>Full name:</label>
+            <input type="text" class="form-control" name="ownerFullName" value="<c:out value="${currentName}"/>" required>
         </div>
         <div class="form-group">
-            <label for="surname">Surame:</label>
-            <input type="text" class="form-control" id="surname">
+            <label>Address:</label>
+            <input type="text" class="form-control" name="ownerAddress" value="<c:out value="${currentAddress}"/>" required>
         </div>
-        <div class="form-group">
-            <label for="address">Address:</label>
-            <input type="text" class="form-control" id="address">
-        </div>
-        <button type="submit" class="btn btn-default">Save</button>
+        <button type="submit" class="btn btn-default">Set new owner</button>
     </form>
 
-</div>
+</Added new invoice.
+        </div>
 </body>
 </html>
