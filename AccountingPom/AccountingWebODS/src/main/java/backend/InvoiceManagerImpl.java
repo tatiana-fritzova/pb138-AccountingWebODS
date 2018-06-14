@@ -74,6 +74,10 @@ public class InvoiceManagerImpl implements InvoiceManager {
         File file = new File("evidence.ods");
         SpreadSheet ss = SpreadSheet.createFromFile(file);
 
+        if (ss.getSheet("OwnerInfo") == null) {
+            addOwnerSheet(ss);
+        }
+
         int year = invoice.getIssueDate().getYear();
         if (ss.getSheet(String.valueOf(year)) == null) {
             newYearSheet(year);
@@ -109,7 +113,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
 
         // also updates total value, total income and total expenses, billTo and billFrom
         if (invoice.getType() == InvoiceType.EXPENSE) {
-            
+
             sheet.getCellAt("C" + row).setValue(owner.getName());
             sheet.getCellAt("D" + row).setValue(owner.getAddress());
             invoice.setBillFrom(owner);
@@ -124,13 +128,13 @@ public class InvoiceManagerImpl implements InvoiceManager {
             double newTotalExpenses = Double.parseDouble(sheet.getCellAt(3, 0).getValue().toString()) + totalPrice;
             sheet.getCellAt(3, 0).setValue(newTotalExpenses);
         } else {
-            
+
             sheet.getCellAt("C" + row).setValue(invoice.getBillFrom().getName());
             sheet.getCellAt("D" + row).setValue(invoice.getBillFrom().getAddress());
             invoice.setBillTo(owner);
             sheet.getCellAt("E" + row).setValue(owner.getName());
             sheet.getCellAt("F" + row).setValue(owner.getAddress());
-            
+
             sheet.getCellAt("I" + row).setValue(totalPrice);
             double newTotalValue = Double.parseDouble(sheet.getCellAt(1, 0).getValue().toString()) + totalPrice;
             sheet.getCellAt(1, 0).setValue(newTotalValue);
@@ -151,9 +155,25 @@ public class InvoiceManagerImpl implements InvoiceManager {
         sheet.getCellAt("J" + row).setValue(items);
 
     }
-    
+
+    private void addOwnerSheet(SpreadSheet ss) throws IOException {
+        ss.addSheet("OwnerInfo");
+        Sheet sheet = ss.getSheet("OwnerInfo");
+
+        sheet.ensureRowCount(3);
+        sheet.ensureColumnCount(2);
+
+        sheet.getCellAt(0, 0).setValue("Owner Information: ");
+        sheet.getCellAt(0, 1).setValue("Name: ");
+        sheet.getCellAt(0, 2).setValue("Address: ");
+
+        sheet.getCellAt("B" + 2).setValue(owner.getName());
+        sheet.getCellAt("B" + 3).setValue(owner.getAddress());
+        saveFile(sheet);
+    }
+
     @Override
-    public List<Invoice> findAllInvoices(){
+    public List<Invoice> findAllInvoices() {
         List<Invoice> allLists = new ArrayList<>();
         invoices.values().forEach((invoiceList) -> {
             allLists.addAll(invoiceList);
@@ -162,14 +182,14 @@ public class InvoiceManagerImpl implements InvoiceManager {
     }
 
     @Override
-    public double getTotalAmount(Invoice invoice){
+    public double getTotalAmount(Invoice invoice) {
         double totalPrice = 0.0;
         for (Item i : invoice.getItems()) {
             totalPrice += i.getPrice();
         }
         return totalPrice;
     }
-    
+
     @Override
     public List<Invoice> findAllInvoices(Integer year) {
         return Collections.unmodifiableList(invoices.get(year));
@@ -297,6 +317,9 @@ public class InvoiceManagerImpl implements InvoiceManager {
 
         for (int i = 0; i < spreadSheet.getSheetCount(); i++) {
             Sheet sheet = spreadSheet.getSheet(i);
+            if (sheet.getName().equals("OwnerInfo")) {
+                continue;
+            }
             int year = Integer.parseInt(sheet.getName());
 
             for (int row = 2; row < sheet.getRowCount(); row++) {
