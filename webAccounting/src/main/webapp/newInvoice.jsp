@@ -164,7 +164,6 @@
             $scope.names.splice(x, 1);
         }
     });
-    });
 </script>
 </body>
 </html>
