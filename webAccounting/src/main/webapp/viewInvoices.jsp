@@ -20,54 +20,40 @@
           rel="stylesheet">
 </head>
 <body>
-<h1>
-<c:choose>
-    <c:when test="${empty error}}">
-        <div class="alert alert-danger">
-            <strong>Info!</strong> no invoices
-        </div>
-    </c:when>
-    <c:otherwise>
-        <div class="alert alert-info">
-            <strong>Info!</strong> there are some invoices
-        </div>
-    </c:otherwise>
-</c:choose>
-
-</h1>
 <jsp:include page="navbar.jsp"/>
+<h1>List of invoices</h1>
 <div class="container" align="center">
-    <h1>Accounting history</h1>
-    <form action="viewInvoices/">
-        First name:<br>
-        <input type="text" name="firstname" value="Mickey">
-        <br>
-        Last name:<br>
-        <input type="text" name="lastname" value="Mouse">
-        <br><br>
-        <input type="submit" value="Submit">
-    </form>
-    <table class="table table-hover" id="items">
-        <thead>
-        <tr>
-            <td>Description</td>
-            <td>Price per item</td>
-            <td>Pieces</td>
-        </tr>
-        </thead>
-        <tbody>
-            <c:forEach items="${seznam}" var="bla">
+    <c:out value="names"/>
+    <c:choose>
+        <c:when test="${not empty noinvoices}}">
+            <div class="alert alert-danger">
+                <strong>Info!</strong> no invoices
+            </div>
+        </c:when>
+        <c:otherwise>
+
+            <table class="table table-hover" id="items">
+                <thead>
                 <tr>
-                    <td><c:out value="${bla}"/></td>
-                    <td>-</td>
-                    <td>-</td>
+                    <td>Description</td>
+                    <td>Price per item</td>
+                    <td>Pieces</td>
                 </tr>
-            </c:forEach>
-        <%--generate a row for each invoice--%>
-        <%--items in data-toggle / hidden--%>
-        <%--https://www.w3schools.com/bootstrap/bootstrap_filters.asp--%>
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                <c:forEach items="${invoices}" var="bla">
+                    <tr>
+                        <td><c:out value="${bla.type}"/></td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+
+        </c:otherwise>
+    </c:choose>
+
 </div>
 </body>
 </html>

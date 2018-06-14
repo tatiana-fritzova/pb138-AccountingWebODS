@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: tatiana
@@ -20,9 +21,12 @@
 <body>
 <body>
 <jsp:include page="navbar.jsp"/>
+<c:out value="${dopost}"/>
+<c:out value="${doget}"/>
+
 <div class="container">
     <h1>Export accounting data</h1>
-    <form >
+    <form action="${pageContext.request.contextPath}/export/" method="post">
         <div class="form-group form-inline">
             <label class="control-label">Choose accounting year:</label>
             <select name="year" class="form-control select">

@@ -5,8 +5,14 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+import backend.Invoice;
+import backend.InvoiceManager;
+import backend.InvoiceManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Tatiana Fritzova
@@ -14,18 +20,14 @@ import org.slf4j.LoggerFactory;
 @WebListener
 public class StartListener implements ServletContextListener {
 
-//    private final static Logger LOG = LoggerFactory.getLogger(StartListener.class);
-
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-//        LOG.info("Initializing web application.");
         ServletContext servletContext = servletContextEvent.getServletContext();
-        servletContext.setAttribute("invoiceManager", new Object());
-//        LOG.info("Invoice manager created and stored into servletContext");
+        InvoiceManager invoiceManager = new InvoiceManagerImpl();
+        servletContext.setAttribute("invoiceManager", invoiceManager);
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-//        LOG.info("Application terminated.");
     }
 }
