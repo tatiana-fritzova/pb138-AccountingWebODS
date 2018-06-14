@@ -92,7 +92,15 @@ public interface InvoiceManager {
     
     /**
      * Reads sheets and adds invoices to map.
+     * @return map of all invoices
      * @throws IOException
      */
     Map<Integer, List<Invoice>>  sheetToMap() throws IOException;
+    
+    /**
+     * Method counts a total amount of an invoice
+     * @param invoice invoice
+     * @return total amount spent/earned
+     */
+    double getTotalAmount(Invoice invoice);
 }

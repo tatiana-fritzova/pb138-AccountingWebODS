@@ -162,6 +162,15 @@ public class InvoiceManagerImpl implements InvoiceManager {
     }
 
     @Override
+    public double getTotalAmount(Invoice invoice){
+        double totalPrice = 0.0;
+        for (Item i : invoice.getItems()) {
+            totalPrice += i.getPrice();
+        }
+        return totalPrice;
+    }
+    
+    @Override
     public List<Invoice> findAllInvoices(Integer year) {
         return Collections.unmodifiableList(invoices.get(year));
     }
