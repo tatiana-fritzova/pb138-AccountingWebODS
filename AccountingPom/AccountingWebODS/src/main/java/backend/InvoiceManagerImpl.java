@@ -20,8 +20,16 @@ public class InvoiceManagerImpl implements InvoiceManager {
     private Person owner;
     private final static org.slf4j.Logger log = LoggerFactory.getLogger(InvoiceManagerImpl.class);
 
-    public InvoiceManagerImpl() {
+    public InvoiceManagerImpl() throws IOException {
         this.invoices = new HashMap<>();
+        File file = new File("evidence.ods");
+        SpreadSheet ss = SpreadSheet.createFromFile(file);
+        if (ss.getSheet("OwnerInfo") != null) {
+            Sheet sheet = ss.getSheet("OwnerInfo");
+            String name = sheet.getCellAt("B" + 2).getValue().toString();
+            String address = sheet.getCellAt("B" + 3).getValue().toString();
+            this.owner = new Person(name, address);
+        }
     }
 
     @Override
