@@ -271,7 +271,19 @@ public class InvoiceManagerImpl implements InvoiceManager {
 
     @Override
     public double getCurrentBalance() throws IOException {
-        return Double.parseDouble(getCurrentSheet().getCellAt(1, 0).getValue().toString());
+//        return Double.parseDouble(getCurrentSheet().getCellAt(1, 0).getValue().toString());
+        Double balance = 0d;
+        for (Map.Entry<Integer, List<Invoice>> entry : invoices.entrySet())
+        {
+            for(Invoice invoice : entry.getValue()) {
+                if (invoice.getType().equals(InvoiceType.INCOME)) {
+                    balance += invoice.getTotalAmount();
+                } else {
+                    balance -= invoice.getTotalAmount();
+                }
+            }
+        }
+        return balance;
     }
 
     public double getIncomeBalance() throws IOException {
