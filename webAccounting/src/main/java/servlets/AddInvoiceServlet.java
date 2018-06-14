@@ -1,6 +1,6 @@
 package servlets;
 
-import org.slf4j.LoggerFactory;
+//import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,7 +20,7 @@ public class AddInvoiceServlet extends HttpServlet {
     private static final String ADD_JSP = "/newInvoice.jsp";
     public static final String URL_MAPPING = "/newInvoice";
 
-    private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(AddInvoiceServlet.class);
+//    private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(AddInvoiceServlet.class);
 
     private boolean validateParams(String params) {
         return params != null && params.length() != 0;
@@ -40,30 +40,26 @@ public class AddInvoiceServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        LOG.debug("GET ...");
+//        LOG.debug("GET ...");
+
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.setCharacterEncoding("utf-8");
         String action = request.getPathInfo();
-        LOG.debug("POST ... {}",action);
-        if (action.equals("/add")) {
+//        LOG.info("POST ... " + request.getQueryString());
+//        LOG.debug("POST ... {}",action);
             // TO DO: handle add
-            String params = request.getParameter("");
+            String params = request.getParameter("jhkhkjh");
             if (!validateParams(params)) {
                 request.setAttribute("error",
-                        "Adding was not successful. Fill in all fields, please!");
-                LOG.debug("invalid data in form");
+                        "Adding was not successful. Fill in all fields, please!" + action);
+//                LOG.debug("invalid data in form");
                 return;
             }
             //add invoice
-            response.sendRedirect(request.getContextPath()+URL_MAPPING);
-        } else {
-            LOG.error("Unknown action " + action);
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Unknown action " + action);
-        }
-
+            request.getRequestDispatcher(ADD_JSP).forward(request, response);
 
     }
 }

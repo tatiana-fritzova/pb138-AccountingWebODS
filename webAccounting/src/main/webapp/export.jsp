@@ -26,7 +26,7 @@
         <div class="form-group form-inline">
             <label class="control-label">Choose accounting year:</label>
             <select name="year" class="form-control select">
-                <option value="">all</option>
+                <option value="-1">all</option>
                 <%--generate available years--%>
                 <option value="2018">2018</option>
                 <option value="2017">2017</option>

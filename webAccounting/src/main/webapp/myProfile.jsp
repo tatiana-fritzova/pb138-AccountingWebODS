@@ -20,6 +20,22 @@
 <body>
 <jsp:include page="navbar.jsp"/>
 <div class="container" align="center">
+    <form action="#">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name">
+        </div>
+        <div class="form-group">
+            <label for="surname">Surame:</label>
+            <input type="text" class="form-control" id="surname">
+        </div>
+        <div class="form-group">
+            <label for="address">Address:</label>
+            <input type="text" class="form-control" id="address">
+        </div>
+        <button type="submit" class="btn btn-default">Save</button>
+    </form>
+
 </div>
 </body>
 </html>

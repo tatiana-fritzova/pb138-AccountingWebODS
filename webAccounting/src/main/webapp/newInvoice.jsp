@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: tatiana
@@ -20,7 +21,11 @@
 <body>
 <jsp:include page="navbar.jsp"/>
 <div ng-app="itemList" ng-controller="myCtrl">
-
+    <c:if test="${not empty error}">
+        <div class="alert alert-danger">
+            <c:out value="error"/>
+        </div>
+    </c:if>
 <div class="container">
     <form action="${pageContext.request.contextPath}/newInvoice" method="post" name="createForm" id="createForm">
 
@@ -29,11 +34,12 @@
             <input ng-repeat="x in products" name="{{x[0]}}Price" value="{{x[1]}}" hidden>
             <input ng-repeat="x in products" name="{{x[0]}}Pieces" value="{{x[2]}}" hidden>
         </div>
+        <input type="number" name="total" value="{{sum}}" hidden>
 
         <div class="row">
-            <div class="col-12">
+            <div class="col-xs-12">
                 <button type="submit" class="btn btn-primary">
-                    <h4 id="create">New Invoice</h4>
+                    <div id="create">New Invoice</div>
                 </button>
             </div>
         </div>
@@ -68,21 +74,15 @@
         <div class="panel-heading">Items</div>
         <div class="panel-body">
         <div class="row">
-            <%--<span class="glyphicon glyphicon-search" aria-hidden="true"></span>--%>
-            <%--<div class="input-group">--%>
-                <%--<span class="input-group-addon"><i class="material-icons">description</i></span>--%>
-                <%--<input ng-model="item" type="text" id="description" class="form-control" name="itemDescription" placeholder="Description">--%>
-            <%--</div>--%>
-
             <div class="col-sm-6">
                 <div class="input-group">
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></span>
+                    <span class="input-group-addon glyphicon glyphicon-pencil" aria-hidden="true"></span>
                     <input ng-model="item" type="text" id="description" class="form-control" name="itemDescription" placeholder="Description">
                 </div>
             </div>
             <div class="col-sm-2">
                 <div class="input-group">
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-euro" aria-hidden="true"></span></span>
+                    <span class="input-group-addon glyphicon glyphicon-euro" aria-hidden="true"></span>
                     <input ng-model="price" type="number" id="price" class="form-control" name="itemPrice" placeholder="Price"
                            min="0" max="100" step="0.01">
                 </div>
