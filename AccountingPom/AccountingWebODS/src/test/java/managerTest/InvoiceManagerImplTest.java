@@ -12,6 +12,7 @@ import backend.InvoiceType;
 import backend.Item;
 import backend.Person;
 import exceptions.IllegalEntityException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class InvoiceManagerImplTest {
 
     private final Person personOne = new Person("Katarina", "Botanicka 45, Brno");
     private final Person personTwo = new Person("Phillip Smith", "Ulica mieru 45, Ilava");
-    private final Person owner = new Person("Katarina Matusova" , "Pod hajom 1366, Dubnica");
+    private final Person owner = new Person("Katarina Matusova", "Pod hajom 1366, Dubnica");
     private final Person personEmpty = new Person("", "");
     private final InvoiceManagerImpl manager = new InvoiceManagerImpl();
 
@@ -75,11 +76,10 @@ public class InvoiceManagerImplTest {
     }
 
     @Test
-    public void createInvoice() throws Exception {
+    public void createInvoice() throws IOException, IllegalEntityException {
         Invoice invoice = sampleInvoiceOne().build();
         manager.setOwner(owner);
         manager.createInvoice(invoice);
-        
 
         Long invoiceId = invoice.getId();
         assertNotNull(invoiceId);
@@ -88,16 +88,30 @@ public class InvoiceManagerImplTest {
                 .isEqualToComparingFieldByField(invoice);
     }
 
-    @Test(expected = IllegalEntityException.class)
+    @Test
     public void createInvoiceWithNullBillTo() throws Exception {
         Invoice invoice = sampleInvoiceOne().billTo(null).build();
+        manager.setOwner(owner);
         manager.createInvoice(invoice);
+
+        Long invoiceId = invoice.getId();
+        assertNotNull(invoiceId);
+
+        assertThat(manager.getInvoiceById(invoiceId))
+                .isEqualToComparingFieldByField(invoice);
     }
 
-    @Test(expected = IllegalEntityException.class)
+    @Test
     public void createInvoiceWithNullBillFrom() throws Exception {
         Invoice invoice = sampleInvoiceOne().billFrom(null).build();
+        manager.setOwner(owner);
         manager.createInvoice(invoice);
+
+        Long invoiceId = invoice.getId();
+        assertNotNull(invoiceId);
+
+        assertThat(manager.getInvoiceById(invoiceId))
+                .isEqualToComparingFieldByField(invoice);
     }
 
     @Test(expected = IllegalEntityException.class)
@@ -118,17 +132,12 @@ public class InvoiceManagerImplTest {
         manager.createInvoice(invoice);
     }
 
-    @Test(expected = IllegalEntityException.class)
-    public void createInvoiceWithEmptyNameFrom() throws Exception {
-        Invoice invoice = sampleInvoiceOne().billFrom(personEmpty).build();
+        @Test(expected = IllegalEntityException.class)
+    public void createInvoiceWithNullPeople() throws Exception {
+        Invoice invoice = sampleInvoiceOne().billTo(null).billFrom(null).build();
         manager.createInvoice(invoice);
     }
 
-    @Test(expected = IllegalEntityException.class)
-    public void createInvoiceWithEmptyNameTo() throws Exception {
-        Invoice invoice = sampleInvoiceOne().billTo(personEmpty).build();
-        manager.createInvoice(invoice);
-    }
 
     @Test(expected = IllegalEntityException.class)
     public void createInvoiceWithNulType() throws Exception {

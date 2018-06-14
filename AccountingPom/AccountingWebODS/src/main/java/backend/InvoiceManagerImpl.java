@@ -24,7 +24,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
 
     public InvoiceManagerImpl() {  
         try {                      
-          //  this.invoices = sheetToMap();
+            this.invoices = sheetToMap();
             File file = new File("evidence.ods");
             SpreadSheet ss = SpreadSheet.createFromFile(file);
             
