@@ -21,9 +21,8 @@
 </head>
 <body>
 <jsp:include page="navbar.jsp"/>
-<h1>List of invoices</h1>
 <div class="container" align="center">
-    <c:out value="names"/>
+    <h1>List of invoices</h1>
     <c:choose>
         <c:when test="${not empty noinvoices}}">
             <div class="alert alert-danger">
@@ -31,25 +30,56 @@
             </div>
         </c:when>
         <c:otherwise>
-
-            <table class="table table-hover" id="items">
-                <thead>
-                <tr>
-                    <td>Description</td>
-                    <td>Price per item</td>
-                    <td>Pieces</td>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${invoices}" var="bla">
+            <div class="container">
+                <div class="row">
+                <input class="form-control col-md-6" id="searchInput" type="text" placeholder="Search...">
+                </div>
+                <div class="row">
+                <br>
+                <table class="table table-hover">
+                    <thead>
                     <tr>
-                        <td><c:out value="${bla.type}"/></td>
-                        <td>-</td>
-                        <td>-</td>
+                        <th>Type</th>
+                        <th>Person</th>
+                        <th>Items</th>
+                        <th>Issue date</th>
+                        <th>Due date</th>
+                        <th>Total amount</th>
                     </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody id="itemsTable">
+                    <tr>
+                        <td>INCOME</td>
+                        <td>Tana, Brno</td>
+                        <td>pineapples</td>
+                        <td>2018-01-01</td>
+                        <td>2018-01-02</td>
+                        <td>5e</td>
+                    </tr>
+                    <tr>
+                        <td>INCOME</td>
+                        <td>Sona, Sahy</td>
+                        <td>pizza</td>
+                        <td>2018-01-01</td>
+                        <td>2018-01-03</td>
+                        <td>6e</td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+
+            </div>
+
+            <script>
+                $(document).ready(function(){
+                    $("#searchInput").on("keyup", function() {
+                        var value = $(this).val().toLowerCase();
+                        $("#itemsTable tr").filter(function() {
+                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                        });
+                    });
+                });
+            </script>
 
         </c:otherwise>
     </c:choose>
