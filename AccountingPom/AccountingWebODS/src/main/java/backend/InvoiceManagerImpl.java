@@ -10,25 +10,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jopendocument.dom.spreadsheet.Sheet;
 import org.jopendocument.dom.spreadsheet.SpreadSheet;
 import org.slf4j.LoggerFactory;
 
 public class InvoiceManagerImpl implements InvoiceManager {
 
-    private final Map<Integer, List<Invoice>> invoices;
+    private Map<Integer, List<Invoice>> invoices = new HashMap<>();
     private Person owner;
     private final static org.slf4j.Logger log = LoggerFactory.getLogger(InvoiceManagerImpl.class);
 
-    public InvoiceManagerImpl() throws IOException {
-        this.invoices = new HashMap<>();
-        File file = new File("evidence.ods");
-        SpreadSheet ss = SpreadSheet.createFromFile(file);
-        if (ss.getSheet("OwnerInfo") != null) {
-            Sheet sheet = ss.getSheet("OwnerInfo");
-            String name = sheet.getCellAt("B" + 2).getValue().toString();
-            String address = sheet.getCellAt("B" + 3).getValue().toString();
-            this.owner = new Person(name, address);
+    public InvoiceManagerImpl() {  
+        try {                      
+          //  this.invoices = sheetToMap();
+            File file = new File("evidence.ods");
+            SpreadSheet ss = SpreadSheet.createFromFile(file);
+            
+            if (ss.getSheet("OwnerInfo") != null) {
+                Sheet sheet = ss.getSheet("OwnerInfo");
+                String name = sheet.getCellAt("B" + 2).getValue().toString();
+                String address = sheet.getCellAt("B" + 3).getValue().toString();
+                this.owner = new Person(name, address);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -79,6 +86,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
         if (owner == null) {
             throw new IllegalEntityException("Owner cannot be null");
         }
+        isValid(invoice);
         File file = new File("evidence.ods");
         SpreadSheet ss = SpreadSheet.createFromFile(file);
 
@@ -384,5 +392,23 @@ public class InvoiceManagerImpl implements InvoiceManager {
             }
         }
         return invoices;
+    }
+
+    private void isValid(Invoice invoice) throws IllegalEntityException {
+        if (invoice.getIssueDate() == null || invoice.getDueDate() == null){
+            throw new IllegalEntityException("Date cannot be null");
+        }
+        if (invoice.getType() == null){
+            throw new IllegalEntityException("Type cannot be null");
+        }
+        if (invoice.getIssueDate().isAfter(invoice.getDueDate())){
+            throw new IllegalEntityException("Due date cannot be before issue date");
+        }
+        if (invoice.getType() == InvoiceType.EXPENSE && invoice.getBillTo() == null){
+            throw new IllegalEntityException("Expense cannot have null as billTo");
+        }
+        if (invoice.getType() == InvoiceType.INCOME && invoice.getBillFrom() == null){
+            throw new IllegalEntityException("Income cannot have null as billFrom");
+        }
     }
 }
