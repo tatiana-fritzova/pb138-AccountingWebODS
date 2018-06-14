@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * @author Tatiana Fritzova
@@ -23,10 +24,14 @@ public class StartListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        ServletContext servletContext = servletContextEvent.getServletContext();
-        InvoiceManager invoiceManager = new InvoiceManagerImpl();
-        invoiceManager.setOwner(new Person("my name", "my address"));
-        servletContext.setAttribute("invoiceManager", invoiceManager);
+        try {
+            ServletContext servletContext = servletContextEvent.getServletContext();
+            InvoiceManager invoiceManager = new InvoiceManagerImpl();
+            invoiceManager.setOwner(new Person("my name", "my address"));
+            servletContext.setAttribute("invoiceManager", invoiceManager);
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(StartListener.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
