@@ -53,6 +53,12 @@ public interface InvoiceManager {
     Invoice getInvoiceById(Long id);
 
     /**
+     * Returns all invoices.
+     * @return list of all invoices
+     */
+    List<Invoice> findAllInvoices();
+    
+    /**
      * Returns a list of all invoices.
      * @param year year
      * @return list of all invoices

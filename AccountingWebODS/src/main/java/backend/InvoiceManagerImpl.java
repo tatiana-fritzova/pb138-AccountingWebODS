@@ -151,6 +151,15 @@ public class InvoiceManagerImpl implements InvoiceManager {
         sheet.getCellAt("J" + row).setValue(items);
 
     }
+    
+    @Override
+    public List<Invoice> findAllInvoices(){
+        List<Invoice> allLists = new ArrayList<>();
+        invoices.values().forEach((invoiceList) -> {
+            allLists.addAll(invoiceList);
+        });
+        return allLists;
+    }
 
     @Override
     public List<Invoice> findAllInvoices(Integer year) {

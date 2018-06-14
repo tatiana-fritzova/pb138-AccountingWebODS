@@ -113,5 +113,10 @@ public class Creator {
               System.out.println(i.toString());
           }
       }
-    */}
+        
+        List<Invoice> all = manager.findAllInvoices();
+        for (Invoice invc : all){
+            System.out.println(invc.getType());
+        }*/
+    }
 }
