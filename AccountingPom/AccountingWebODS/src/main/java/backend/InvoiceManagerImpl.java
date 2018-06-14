@@ -42,6 +42,18 @@ public class InvoiceManagerImpl implements InvoiceManager {
     @Override
     public void setOwner(Person person) {
         this.owner = person;
+        try{
+            File file = new File("evidence.ods");
+            SpreadSheet ss = SpreadSheet.createFromFile(file);
+            
+            if (ss.getSheet("OwnerInfo") != null) {
+                Sheet sheet = ss.getSheet("OwnerInfo");
+                sheet.getCellAt("B" + 2).setValue(person.getName());
+                sheet.getCellAt("B" + 3).setValue(person.getAddress());
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
