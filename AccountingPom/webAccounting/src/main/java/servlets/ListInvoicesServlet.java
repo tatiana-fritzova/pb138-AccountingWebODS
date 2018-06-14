@@ -1,6 +1,7 @@
 package servlets;
 
 import backend.Invoice;
+import backend.InvoiceManagerImpl;
 import backend.Item;
 
 import javax.servlet.ServletException;
@@ -28,7 +29,7 @@ public class ListInvoicesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        request.setAttribute("invoices", new String[]{"item1", "item2"});
+        request.setAttribute("invoiceManager", new InvoiceManagerImpl());
         request.setAttribute("seznam", Arrays.asList("mléko", "rohlíky", "salám"));
         try {
             request.getRequestDispatcher(LIST_JSP).forward(request, response);
