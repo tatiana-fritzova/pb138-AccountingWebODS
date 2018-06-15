@@ -44,24 +44,24 @@ public class PdfExporter {
     }
 
     public File export(List<Invoice> invoices, int year) throws FileNotFoundException, DocumentException, IOException {
+        // Open the PDF document
+        // step 2
         String dir = System.getProperty("user.dir");
-        File file = new File(dir + "/Dokumenty/Invoices.pdf");
+        File file = new File (dir + "/InvoicesFor" + String.valueOf(year)+".pdf");
         Path path = Paths.get(file.getAbsolutePath());
-        System.out.println(path);
-        System.out.println(file.toPath());
         this.writer = PdfWriter.getInstance(document, new FileOutputStream(file));
         //File outFile = new File("Dokumenty/InvoicesFor" + String.valueOf(year)+".pdf");
         //PdfDocument pdf = new PdfDocument();
         //document.addDocListener(pdf);
 
-        /* FileOutputStream fileOutputStream;
+       /* FileOutputStream fileOutputStream;
         try {
             fileOutputStream = new FileOutputStream(outFile);
             this.writer = PdfWriter.getInstance(pdf, fileOutputStream);
             pdf.addWriter(writer);
-            
+
         } catch (FileNotFoundException | DocumentException ex) {
-             
+
             Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }*/
         document.open();
@@ -75,17 +75,20 @@ public class PdfExporter {
             }
         });
 
+
         document.close();
+
 
         //po skonceni otvorit. Chceme?
         // OOUtils.open(new File(path.toString()));
-        // alebo : 
+
+        // alebo :
         return new File(path.toString());
     }
 
     public File exportAll(List<Invoice> invoices) throws DocumentException, IOException {
         String dir = System.getProperty("user.dir");
-        File file = new File(dir + "/Dokumenty/Invoices.pdf");
+        File file = new File (dir + "/Invoices.pdf");
         Path path = Paths.get(file.getAbsolutePath());
         System.out.println(path);
         System.out.println(file.toPath());
@@ -114,7 +117,7 @@ public class PdfExporter {
         document.add(createParagraph(String.valueOf(in.getId()), "Invoice ID " + "\t\t" + ":" + "\t"));
         document.add(createParagraph(String.valueOf(in.getIssueDate()), "Issue Date" + "\t" + ":" + "\t"));
         document.add(createParagraph(String.valueOf(in.getDueDate()), "Due Date" + "\t" + ":" + "\t"));
-        document.add(createParagraph(String.valueOf(in.getType()), "Type" + "\t" + ":" + "\t"));
+        document.add(createParagraph(String.valueOf(in.getType()),"Type"+ "\t" + ":" + "\t"));
 
         document.add(Chunk.NEWLINE);
         DottedLineSeparator dottedline = new DottedLineSeparator();
@@ -147,7 +150,7 @@ public class PdfExporter {
         document.add(Chunk.NEWLINE);
         DecimalFormat df = new DecimalFormat("####0.00");
 
-        document.add(createParagraph(String.valueOf(df.format(totalPrice) + "\t\t EUR \t\t"), "Total Price " + "\t" + ":" + "\t"));
+        document.add(createParagraph(String.valueOf(df.format(totalPrice) + "\t\t EUR \t\t"),"Total Price "+ "\t" + ":" + "\t"));
     }
 
     private Paragraph createParagraph(String value, String name) {
@@ -173,6 +176,7 @@ public class PdfExporter {
 
         Chunk valueName = new Chunk(person.getName(), font);
 
+
         p.add(valueName);
         p.add(Chunk.NEWLINE);
         p.setIndentationLeft(20);
@@ -191,7 +195,7 @@ public class PdfExporter {
         Chunk text = new Chunk(item.getDescription() + "\t\t : \t\t ", font);
         p.add(text);
         DecimalFormat df = new DecimalFormat("####0.00");
-        text = new Chunk(df.format(item.getPrice()) + "\t\t EUR \t\t", font);
+        text = new Chunk(df.format( item.getPrice()) + "\t\t EUR \t\t", font);
         p.add(text);
         p.setAlignment(Element.ALIGN_CENTER);
         return p;
