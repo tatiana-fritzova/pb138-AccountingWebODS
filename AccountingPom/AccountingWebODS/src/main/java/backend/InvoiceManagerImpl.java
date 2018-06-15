@@ -1,5 +1,6 @@
 package backend;
 
+import com.lowagie.text.DocumentException;
 import exceptions.IllegalEntityException;
 import java.io.File;
 import java.io.IOException;
@@ -254,7 +255,13 @@ public class InvoiceManagerImpl implements InvoiceManager {
     @Override
     public void exportToPdf(int year) {
         PdfExporter exporter = new PdfExporter();
-        exporter.export(invoices.get(year), year);
+        try {
+            exporter.export(invoices.get(year), year);
+        } catch (DocumentException ex) {
+            Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
