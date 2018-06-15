@@ -25,12 +25,6 @@ public class Invoice {
     private InvoiceType type;
 
     public Invoice() throws IOException{
-        /*File file = new File("evidence.ods");
-        SpreadSheet spreadSheet = SpreadSheet.createFromFile(file);
-        int year = Integer.parseInt(spreadSheet.getSheet(spreadSheet.getSheetCount() - 1).getName());
-        Sheet sheet = spreadSheet.getSheet(String.valueOf(year));
-        Integer number = sheet.getRowCount() - 2;
-        this.id = number.longValue();*/
         this.id = count++;
     }
 
