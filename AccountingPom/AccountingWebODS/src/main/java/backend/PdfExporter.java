@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.logging.Level;
@@ -41,10 +43,14 @@ public class PdfExporter {
         this.document = new Document(PageSize.A4);
     }
 
-    public File export(List<Invoice> invoices, int year) throws DocumentException, IOException {
+    public File export(List<Invoice> invoices, int year) throws FileNotFoundException, DocumentException, IOException {
         // Open the PDF document
         // step 2
+        
         File file = new File ("Dokumenty/InvoicesFor" + String.valueOf(year)+".pdf");
+        Path path = Paths.get(file.getAbsolutePath());
+        System.out.println(path);
+        System.out.println(file.toPath());
         this.writer = PdfWriter.getInstance(document, new FileOutputStream(file));
         //File outFile = new File("Dokumenty/InvoicesFor" + String.valueOf(year)+".pdf");
         //PdfDocument pdf = new PdfDocument();
@@ -76,13 +82,17 @@ public class PdfExporter {
         
         
         //po skonceni otvorit. Chceme?
-        OOUtils.open(file);
-        return file;
-
+        OOUtils.open(new File(path.toString()));
+        
+        // alebo : 
+        return new File(path.toString());
     }
-
-    public File export(List<Invoice> invoices) throws DocumentException, IOException {
-        File file = new File ("Dokumenty/AllInvoices.pdf");
+    
+    public File exportAll(List<Invoice> invoices) throws DocumentException, IOException {
+        File file = new File ("Dokumenty/Invoices.pdf");
+        Path path = Paths.get(file.getAbsolutePath());
+        System.out.println(path);
+        System.out.println(file.toPath());
         this.writer = PdfWriter.getInstance(document, new FileOutputStream(file));
 
         document.open();
@@ -97,7 +107,7 @@ public class PdfExporter {
         });
         document.close();
       //  OOUtils.open(file);
-        return file;
+        return new File(path.toString());
 
     }
 

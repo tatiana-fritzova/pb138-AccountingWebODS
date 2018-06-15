@@ -258,9 +258,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
         try {
             File file = exporter.export(invoices.get(year), year);
             return file;
-        } catch (DocumentException ex) {
-            Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (DocumentException | IOException ex) {
             Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
@@ -270,11 +268,9 @@ public class InvoiceManagerImpl implements InvoiceManager {
     public File exportAllToPfd() {
         PdfExporter exporter = new PdfExporter();
         try {
-            File file = exporter.export(findAllInvoices());
+            File file = exporter.exportAll(findAllInvoices());
             return file;
-        } catch (DocumentException ex) {
-            Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (DocumentException | IOException ex) {
             Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
