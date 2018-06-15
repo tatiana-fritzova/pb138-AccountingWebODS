@@ -3,14 +3,12 @@ package servlets;
 import backend.InvoiceManager;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Servlet for exporting to PDF.
@@ -41,19 +39,35 @@ public class ExportServlet extends HttpServlet{
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//
-//        Integer year = Integer.parseInt(request.getParameter("year"));
-//        if (!getInvoiceManager().getYears().contains(year)) {
-//            //set error
-//        }
-//        if (year < 0) {
-//            getInvoiceManager().exportAllToPfd();
-//        } else {
-//            getInvoiceManager().exportToPdf(year);
-//        }
-////
+        Integer year = Integer.parseInt(request.getParameter("year"));
+        if (!getInvoiceManager().getYears().contains(year)) {
+            //set error
+        }
+        if (year < 0) {
+            getInvoiceManager().exportAllToPfd();
+        } else {
+            getInvoiceManager().exportToPdf(year);
+        }
 //        File file = getInvoiceManager().getFile(year);
 //        response.setContentType("application/pdf");
+//        response.setHeader ("Content-Disposition", "attachment; filename=""+request.getParameter("file")+""");
+//        String name = file.getName().substring(file.getName().lastIndexOf("/") + 1,file.getName().length());
+//        InputStream in = new FileInputStream(f);
+//        ServletOutputStream outs = response.getOutputStream();
+//
+//
+//        int bit = 256;
+//        int i = 0;
+//        try {
+//            while ((bit) >= 0) {
+//                bit = in.read();
+//                outs.write(bit);
+//            }
+//        } catch (IOException ioe) {ioe.printStackTrace(System.out);
+//        }
+//        outs.flush();
+//        outs.close();
+//        in.close();
 
         try {
             request.getRequestDispatcher(EXPORT_JSP).forward(request, response);
