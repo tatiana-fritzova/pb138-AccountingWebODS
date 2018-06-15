@@ -16,7 +16,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
 
     private Map<Integer, List<Invoice>> invoices = new HashMap<>();
     private Person owner;
-    private static String filePath = "/home/aneta/Downloads/pb138-AccountingWebODS-master/AccountingPom/AccountingWebODS/src/main/resources/evidence.ods";
+    private static String filePath = "evidence.ods";
     private final static org.slf4j.Logger log = LoggerFactory.getLogger(InvoiceManagerImpl.class);
 
     public InvoiceManagerImpl() {  
