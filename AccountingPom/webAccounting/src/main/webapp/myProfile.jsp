@@ -22,6 +22,7 @@
 <jsp:include page="navbar.jsp"/>
 <div class="container" align="center">
     <h1>My profile</h1>
+    <br>
     <c:if test="${not empty failure}">
         <div class="alert alert-danger alert-dismissible">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>

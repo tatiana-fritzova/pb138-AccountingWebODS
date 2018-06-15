@@ -21,7 +21,6 @@
 <body>
 <body>
 <jsp:include page="navbar.jsp"/>
-<c:out value="${dopost}"/>
 <c:out value="${doget}"/>
 
 <div class="container">
@@ -32,8 +31,9 @@
             <select name="year" class="form-control select">
                 <option value="-1">all</option>
                 <%--generate available years--%>
-                <option value="2018">2018</option>
-                <option value="2017">2017</option>
+                <c:forEach items="${years}" var="year">
+                    <option value="<c:out value="${year}"/>"><c:out value="${year}"/></option>
+                </c:forEach>
             </select>
         </div>
         <a href="#" data-toggle="tooltip" data-placement="right" title="PDF will be automatically downloaded.">

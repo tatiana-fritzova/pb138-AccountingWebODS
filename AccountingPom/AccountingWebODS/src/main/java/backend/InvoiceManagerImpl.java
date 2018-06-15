@@ -4,12 +4,7 @@ import exceptions.IllegalEntityException;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jopendocument.dom.spreadsheet.Sheet;
@@ -438,5 +433,15 @@ public class InvoiceManagerImpl implements InvoiceManager {
         if (invoice.getType() == InvoiceType.INCOME && invoice.getBillFrom() == null){
             throw new IllegalEntityException("Income cannot have null as billFrom");
         }
+    }
+
+//    @Override
+//    public File getFile(Integer year){
+//        return new File("Dokumenty/InvoicesFor" + String.valueOf(year)+".pdf");
+//    }
+//
+    @Override
+    public Set<Integer> getYears() {
+        return invoices.keySet();
     }
 }

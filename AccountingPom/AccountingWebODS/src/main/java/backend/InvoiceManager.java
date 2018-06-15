@@ -1,9 +1,12 @@
 package backend;
 
 import exceptions.IllegalEntityException;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface InvoiceManager {
     
@@ -103,4 +106,17 @@ public interface InvoiceManager {
      * @return total amount spent/earned
      */
     double getTotalAmount(Invoice invoice);
+
+//    /**
+//     * Gets pdf file for given year.
+//     * @param year year
+//     * @return file for given year
+//     */
+//    File getFile(Integer year);
+//
+    /**
+     * Gets accounting years.
+     * @return set of accounting years
+     */
+    Set<Integer> getYears();
 }

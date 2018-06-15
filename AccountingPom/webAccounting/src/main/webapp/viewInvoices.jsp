@@ -25,9 +25,9 @@
     <h1>List of invoices</h1>
     <div class="container">
         <c:choose>
-            <c:when test="${balance < 0}"><div class="alert alert-danger"></c:when>
-            <c:when test="${balance > 0}"><div class="alert alert-success"></c:when>
-            <c:otherwise><div class="alert alert-info"></c:otherwise>
+            <c:when test="${balance gt -0.01 and balance lt 0.01}"><div class="alert alert-info"></c:when>
+            <c:when test="${balance ge 0.01}"><div class="alert alert-success"></c:when>
+            <c:otherwise><div class="alert alert-danger"></c:otherwise>
         </c:choose>
             <strong>Current balance: </strong> <c:out value="${balance}"/>
         </div>

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +34,9 @@ public class ListInvoicesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setAttribute("invoices", getInvoiceManager().findAllInvoices());
+        DecimalFormat df = new DecimalFormat("#.##");
+        df.format(getInvoiceManager().getCurrentBalance());
+        Math.round(getInvoiceManager().getCurrentBalance());
         request.setAttribute("balance", getInvoiceManager().getCurrentBalance());
         request.setAttribute("string", getInvoiceManager().findAllInvoices().toString());
         try {
@@ -40,9 +45,4 @@ public class ListInvoicesServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
-
-//    @Override
-//    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        response.sendRedirect(request.getContextPath()+URL_MAPPING);
-//    }
 }
