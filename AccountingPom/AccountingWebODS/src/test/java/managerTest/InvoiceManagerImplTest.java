@@ -59,13 +59,24 @@ public class InvoiceManagerImplTest {
 
     }
 
-    private InvoiceBuilder sampleInvoiceOne() {
+    private InvoiceBuilder sampleInvoiceIncome() {
         return new InvoiceBuilder()
                 .billFrom(personOne)
                 .billTo(personTwo)
                 .dueDate(LocalDate.of(1802, Month.MARCH, 10))
                 .issueDate(LocalDate.of(1800, Month.MARCH, 10))
                 .type(InvoiceType.INCOME)
+                .items(itemList());
+
+    }
+
+    private InvoiceBuilder sampleInvoiceExpense() {
+        return new InvoiceBuilder()
+                .billFrom(personOne)
+                .billTo(personTwo)
+                .dueDate(LocalDate.of(1802, Month.MARCH, 10))
+                .issueDate(LocalDate.of(1800, Month.MARCH, 10))
+                .type(InvoiceType.EXPENSE)
                 .items(itemList());
 
     }
@@ -77,7 +88,7 @@ public class InvoiceManagerImplTest {
 
     @Test
     public void createInvoice() throws IOException, IllegalEntityException {
-        Invoice invoice = sampleInvoiceOne().build();
+        Invoice invoice = sampleInvoiceIncome().build();
         manager.setOwner(owner);
         manager.createInvoice(invoice);
 
@@ -89,8 +100,8 @@ public class InvoiceManagerImplTest {
     }
 
     @Test
-    public void createInvoiceWithNullBillTo() throws Exception {
-        Invoice invoice = sampleInvoiceOne().billTo(null).build();
+    public void createIncomeWithNullBillTo() throws Exception {
+        Invoice invoice = sampleInvoiceIncome().billTo(null).build();
         manager.setOwner(owner);
         manager.createInvoice(invoice);
 
@@ -102,8 +113,8 @@ public class InvoiceManagerImplTest {
     }
 
     @Test
-    public void createInvoiceWithNullBillFrom() throws Exception {
-        Invoice invoice = sampleInvoiceOne().billFrom(null).build();
+    public void createExpenseWithNullBillFrom() throws Exception {
+        Invoice invoice = sampleInvoiceExpense().billFrom(null).build();
         manager.setOwner(owner);
         manager.createInvoice(invoice);
 
@@ -115,14 +126,26 @@ public class InvoiceManagerImplTest {
     }
 
     @Test(expected = IllegalEntityException.class)
+    public void createExpenseWithNullBillTo() throws Exception {
+        Invoice invoice = sampleInvoiceExpense().billTo(null).build();
+        manager.createInvoice(invoice);
+    }
+
+    @Test(expected = IllegalEntityException.class)
+    public void createIncomeWithNullBillFrom() throws Exception {
+        Invoice invoice = sampleInvoiceIncome().billFrom(null).build();
+        manager.createInvoice(invoice);
+    }
+
+    @Test(expected = IllegalEntityException.class)
     public void createInvoiceWithNullIssueDate() throws Exception {
-        Invoice invoice = sampleInvoiceOne().issueDate(null).build();
+        Invoice invoice = sampleInvoiceIncome().issueDate(null).build();
         manager.createInvoice(invoice);
     }
 
     @Test(expected = IllegalEntityException.class)
     public void createInvoiceWithNullDueDate() throws Exception {
-        Invoice invoice = sampleInvoiceOne().dueDate(null).build();
+        Invoice invoice = sampleInvoiceIncome().dueDate(null).build();
         manager.createInvoice(invoice);
     }
 
@@ -132,16 +155,15 @@ public class InvoiceManagerImplTest {
         manager.createInvoice(invoice);
     }
 
-        @Test(expected = IllegalEntityException.class)
+    @Test(expected = IllegalEntityException.class)
     public void createInvoiceWithNullPeople() throws Exception {
-        Invoice invoice = sampleInvoiceOne().billTo(null).billFrom(null).build();
+        Invoice invoice = sampleInvoiceIncome().billTo(null).billFrom(null).build();
         manager.createInvoice(invoice);
     }
 
-
     @Test(expected = IllegalEntityException.class)
     public void createInvoiceWithNulType() throws Exception {
-        Invoice invoice = sampleInvoiceOne().type(null).build();
+        Invoice invoice = sampleInvoiceIncome().type(null).build();
         manager.createInvoice(invoice);
     }
 
