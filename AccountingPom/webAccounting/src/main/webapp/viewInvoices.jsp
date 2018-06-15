@@ -27,24 +27,23 @@
         <div class="alert alert-info">
             <strong>Current balance: </strong> <c:out value="${balance}"/>
 
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>year</th>
-                    <th>balance</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${years}" var="year">
-                    <tr>
-                        <td><c:out value="${year}"/></td>
-                        <%--AKO SA DA PRISTUPIT K MAPE V JPS/--%>
-                        <%--<td><c:out value="${balance.year}"/></td>--%>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </div>
+            <%--<table class="table table-hover">--%>
+                <%--<thead>--%>
+                <%--<tr>--%>
+                    <%--<th>year</th>--%>
+                    <%--<th>balance</th>--%>
+                <%--</tr>--%>
+                <%--</thead>--%>
+                <%--<tbody>--%>
+                <%--<c:forEach items="${balances.map}" var="balance">--%>
+                    <%--<tr>--%>
+                        <%--<td><c:out value="${balance.value}"/></td>--%>
+                        <%--<td><c:out value="${balance.value}"/></td>--%>
+                    <%--</tr>--%>
+                <%--</c:forEach>--%>
+                <%--</tbody>--%>
+            <%--</table>--%>
+        <%--</div>--%>
 
 
         <div class="input-group">

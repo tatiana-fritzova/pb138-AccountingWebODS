@@ -110,13 +110,6 @@ public interface InvoiceManager {
      */
     double getTotalAmount(Invoice invoice);
 
-//    /**
-//     * Gets pdf file for given year.
-//     * @param year year
-//     * @return file for given year
-//     */
-//    File getFile(Integer year);
-//
     /**
      * Gets accounting years.
      * @return set of accounting years

@@ -417,12 +417,6 @@ public class InvoiceManagerImpl implements InvoiceManager {
         }
     }
 
-//    @Override
-//    public File getFile(Integer year){
-//        return new File("Dokumenty/InvoicesFor" + String.valueOf(year)+".pdf");
-//    }
-//
-
     @Override
     public Set<Integer> getYears() {
         return invoices.keySet();

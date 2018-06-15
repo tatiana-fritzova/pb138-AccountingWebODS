@@ -24,8 +24,14 @@
 <c:out value="${doget}"/>
 
 <div class="container">
+    <c:if test="${not empty failure}">
+        <div class="alert alert-danger alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Failure!</strong> <c:out value="${failure}"/>
+        </div>
+    </c:if>
     <h1>Export accounting data</h1>
-    <form action="${pageContext.request.contextPath}/export/" method="post">
+    <form action="${pageContext.request.contextPath}/export" method="post">
         <div class="form-group form-inline">
             <label class="control-label">Choose accounting year:</label>
             <select name="year" class="form-control select">

@@ -5,6 +5,7 @@ import backend.InvoiceManager;
 import backend.InvoiceManagerImpl;
 import backend.Item;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,9 +35,8 @@ public class ListInvoicesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setAttribute("invoices", getInvoiceManager().findAllInvoices());
-//        request.setAttribute("balance", getInvoiceManager().getCurrentBalance());
         request.setAttribute("years", getInvoiceManager().getYears());
-        request.setAttribute("balance", getInvoiceManager().getCurrentBalances().toString());
+        request.setAttribute("balances", getInvoiceManager().getCurrentBalances().toString());
         try {
             request.getRequestDispatcher(LIST_JSP).forward(request, response);
         } catch (ServletException | IOException e) {

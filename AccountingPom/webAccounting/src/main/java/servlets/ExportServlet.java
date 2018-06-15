@@ -38,36 +38,38 @@ public class ExportServlet extends HttpServlet{
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        request.setAttribute("years", getInvoiceManager().getYears());
         Integer year = Integer.parseInt(request.getParameter("year"));
-        if (!getInvoiceManager().getYears().contains(year)) {
-            //set error
-        }
-        if (year < 0) {
-            getInvoiceManager().exportAllToPfd();
+        File file;
+        if (year == -1) {
+            file = getInvoiceManager().exportAllToPfd();
+        } else if (getInvoiceManager().getYears().contains(year)) {
+            file = getInvoiceManager().exportToPdf(year);
         } else {
-            getInvoiceManager().exportToPdf(year);
+            request.setAttribute("failure", "Invalid year."+year);
+            request.getRequestDispatcher(EXPORT_JSP).forward(request, response);
+            return;
         }
-//        File file = getInvoiceManager().getFile(year);
-//        response.setContentType("application/pdf");
-//        response.setHeader ("Content-Disposition", "attachment; filename=""+request.getParameter("file")+""");
-//        String name = file.getName().substring(file.getName().lastIndexOf("/") + 1,file.getName().length());
-//        InputStream in = new FileInputStream(f);
-//        ServletOutputStream outs = response.getOutputStream();
-//
-//
-//        int bit = 256;
-//        int i = 0;
-//        try {
-//            while ((bit) >= 0) {
-//                bit = in.read();
-//                outs.write(bit);
-//            }
-//        } catch (IOException ioe) {ioe.printStackTrace(System.out);
-//        }
-//        outs.flush();
-//        outs.close();
-//        in.close();
+        if (file == null) {
+            request.setAttribute("failure", "File not found.");
+            request.getRequestDispatcher(EXPORT_JSP).forward(request, response);
+            return;
+        }
+        response.setContentType("application/pdf");
+        response.setHeader( "Content-Disposition", String.format("attachment; filename=\"%s\"", file.getName()));
+
+        response.setContentLength((int) file.length());
+
+        FileInputStream fileInputStream = new FileInputStream(file);
+        ServletOutputStream responseOutputStream = response.getOutputStream();
+        int bytes;
+        while ((bytes = fileInputStream.read()) != -1) {
+            responseOutputStream.write(bytes);
+        }
+        responseOutputStream.flush();
+        responseOutputStream.close();
+        fileInputStream.close();
 
         try {
             request.getRequestDispatcher(EXPORT_JSP).forward(request, response);
