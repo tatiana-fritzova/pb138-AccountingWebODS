@@ -15,10 +15,12 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jopendocument.dom.OOUtils;
 import org.jopendocument.model.OpenDocument;
 
 /*
@@ -39,13 +41,16 @@ public class PdfExporter {
         this.document = new Document(PageSize.A4);
     }
 
-    public void export(List<Invoice> invoices, int year) {
+    public void export(List<Invoice> invoices, int year) throws FileNotFoundException, DocumentException, IOException {
         // Open the PDF document
-        File outFile = new File("Dokumenty/InvoicesFor" + String.valueOf(year)+".pdf");
-        PdfDocument pdf = new PdfDocument();
-        document.addDocListener(pdf);
+        // step 2
+        File file = new File ("Dokumenty/InvoicesFor" + String.valueOf(year)+".pdf");
+        this.writer = PdfWriter.getInstance(document, new FileOutputStream(file));
+        //File outFile = new File("Dokumenty/InvoicesFor" + String.valueOf(year)+".pdf");
+        //PdfDocument pdf = new PdfDocument();
+        //document.addDocListener(pdf);
 
-        FileOutputStream fileOutputStream;
+       /* FileOutputStream fileOutputStream;
         try {
             fileOutputStream = new FileOutputStream(outFile);
             this.writer = PdfWriter.getInstance(pdf, fileOutputStream);
@@ -54,7 +59,7 @@ public class PdfExporter {
         } catch (FileNotFoundException | DocumentException ex) {
              
             Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         document.open();
 
         invoices.forEach((in) -> {
@@ -66,7 +71,13 @@ public class PdfExporter {
             }
         });
 
+            
         document.close();
+        
+        
+        //po skonceni otvorit. Chceme?
+        OOUtils.open(file);
+        
 
     }
 
@@ -119,7 +130,7 @@ public class PdfExporter {
         font = new Font(Font.TIMES_ROMAN, 14, Font.BOLDITALIC, Color.blue);
         Chunk nameText = new Chunk(name, font);
         p.add(nameText);
-        font = new Font(Font.TIMES_ROMAN, 12, Font.BOLDITALIC, Color.black);
+        font = new Font(Font.TIMES_ROMAN, 12, Font.NORMAL, Color.black);
         Chunk valueName = new Chunk(value, font);
         p.add(value);
         p.getIndentationLeft();
@@ -129,7 +140,7 @@ public class PdfExporter {
     private Paragraph createPersonParagraph(Person person) {
         Paragraph p = new Paragraph();
         Font font;
-        font = new Font(Font.TIMES_ROMAN, 12, Font.BOLDITALIC, Color.black);
+        font = new Font(Font.TIMES_ROMAN, 12, Font.NORMAL, Color.black);
         Chunk text = new Chunk("Name : " + "\t\t", font);
         p.add(text);
         p.setAlignment(Element.ALIGN_CENTER);
@@ -151,7 +162,7 @@ public class PdfExporter {
     private Paragraph createItemParagraph(Item item) {
         Paragraph p = new Paragraph();
         Font font;
-        font = new Font(Font.TIMES_ROMAN, 12, Font.BOLDITALIC, Color.black);
+        font = new Font(Font.TIMES_ROMAN, 12, Font.NORMAL, Color.black);
         Chunk text = new Chunk(item.getDescription() + "\t\t : \t\t ", font);
         p.add(text);
         DecimalFormat df = new DecimalFormat("####0.00");
