@@ -44,9 +44,12 @@ public interface InvoiceManager {
 
     /**
      * Gets balance for current accounting year.
+     * @param year
      * @return Double balance
      */
-    double getCurrentBalance() throws IOException;
+    double getCurrentBalance(int year);
+
+    Map<Integer, Double> getCurrentBalances();
 
     /**
      * Returns an invoice with given id.
@@ -119,4 +122,6 @@ public interface InvoiceManager {
      * @return set of accounting years
      */
     Set<Integer> getYears();
+
+
 }

@@ -34,11 +34,9 @@ public class ListInvoicesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setAttribute("invoices", getInvoiceManager().findAllInvoices());
-        DecimalFormat df = new DecimalFormat("#.##");
-        df.format(getInvoiceManager().getCurrentBalance());
-        Math.round(getInvoiceManager().getCurrentBalance());
-        request.setAttribute("balance", getInvoiceManager().getCurrentBalance());
-        request.setAttribute("string", getInvoiceManager().findAllInvoices().toString());
+//        request.setAttribute("balance", getInvoiceManager().getCurrentBalance());
+        request.setAttribute("years", getInvoiceManager().getYears());
+        request.setAttribute("balance", getInvoiceManager().getCurrentBalances().toString());
         try {
             request.getRequestDispatcher(LIST_JSP).forward(request, response);
         } catch (ServletException | IOException e) {

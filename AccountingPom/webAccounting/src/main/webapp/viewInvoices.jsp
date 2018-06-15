@@ -24,13 +24,28 @@
 <div class="container" align="center">
     <h1>List of invoices</h1>
     <div class="container">
-        <c:choose>
-            <c:when test="${balance gt -0.01 and balance lt 0.01}"><div class="alert alert-info"></c:when>
-            <c:when test="${balance ge 0.01}"><div class="alert alert-success"></c:when>
-            <c:otherwise><div class="alert alert-danger"></c:otherwise>
-        </c:choose>
+        <div class="alert alert-info">
             <strong>Current balance: </strong> <c:out value="${balance}"/>
+
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>year</th>
+                    <th>balance</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${years}" var="year">
+                    <tr>
+                        <td><c:out value="${year}"/></td>
+                        <%--AKO SA DA PRISTUPIT K MAPE V JPS/--%>
+                        <%--<td><c:out value="${balance.year}"/></td>--%>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
         </div>
+
 
         <div class="input-group">
             <span class="input-group-addon glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -55,29 +70,28 @@
 
                 <c:if test="${invoice.type.toString() == 'INCOME'}"><tr class="alert alert-success"></c:if>
                 <c:if test="${invoice.type.toString() == 'EXPENSE'}"><tr class="alert alert-danger"></c:if>
-                    <td><c:out value="${invoice.type}"/></td>
-                    <td><c:out value="${invoice.billFrom.name}"/>, <c:out value="${invoice.billFrom.address}"/></td>
-                    <td><c:out value="${invoice.billTo.name}"/>, <c:out value="${invoice.billTo.address}"/></td>
-                    <td>
-                        <c:forEach items="${invoice.items}" var="item">
-                            <c:out value="${item.description}"/> (<c:out value="${item.price}"/> EUR) <br>
-                        </c:forEach>
-                    </td>
-                    <td><c:out value="${invoice.issueDate}"/></td>
-                    <td><c:out value="${invoice.dueDate}"/></td>
-                    <td><c:out value="${invoice.getTotalAmount()}"/> EUR</td>
+                <td><c:out value="${invoice.type}"/></td>
+                <td><c:out value="${invoice.billFrom.name}"/>, <c:out value="${invoice.billFrom.address}"/></td>
+                <td><c:out value="${invoice.billTo.name}"/>, <c:out value="${invoice.billTo.address}"/></td>
+                <td>
+                    <c:forEach items="${invoice.items}" var="item">
+                        <c:out value="${item.description}"/> (<c:out value="${item.price}"/> EUR) <br>
+                    </c:forEach>
+                </td>
+                <td><c:out value="${invoice.issueDate}"/></td>
+                <td><c:out value="${invoice.dueDate}"/></td>
+                <td><c:out value="${invoice.getTotalAmount()}"/> EUR</td>
                 </tr>
             </c:forEach>
             </tbody>
         </table>
-        </div>
-
+    </div>
 
     <script>
-        $(document).ready(function(){
-            $("#searchInput").on("keyup", function() {
+        $(document).ready(function () {
+            $("#searchInput").on("keyup", function () {
                 var value = $(this).val().toLowerCase();
-                $("#itemsTable tr").filter(function() {
+                $("#itemsTable tr").filter(function () {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
