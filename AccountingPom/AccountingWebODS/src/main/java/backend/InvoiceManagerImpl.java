@@ -15,12 +15,13 @@ public class InvoiceManagerImpl implements InvoiceManager {
 
     private Map<Integer, List<Invoice>> invoices = new HashMap<>();
     private Person owner;
+    private static String filePath = "evidence.ods";
     private final static org.slf4j.Logger log = LoggerFactory.getLogger(InvoiceManagerImpl.class);
 
     public InvoiceManagerImpl() {  
         try {                      
             this.invoices = sheetToMap();
-            File file = new File("evidence.ods");
+            File file = new File(filePath);
             SpreadSheet ss = SpreadSheet.createFromFile(file);
             
             if (ss.getSheet("OwnerInfo") != null) {
@@ -38,7 +39,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
     public void setOwner(Person person) {
         this.owner = person;
         try{
-            File file = new File("evidence.ods");
+            File file = new File(filePath);
             SpreadSheet ss = SpreadSheet.createFromFile(file);
             
             if (ss.getSheet("OwnerInfo") != null) {
@@ -61,7 +62,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
 
     @Override
     public void newYearSheet(int year) throws IOException {
-        File file = new File("evidence.ods");
+        File file = new File(filePath);
         SpreadSheet ss = SpreadSheet.createFromFile(file);
         if (ss.getSheet(String.valueOf(year)) != null) {
             log.error("Sheet for that year already exists.");
@@ -74,7 +75,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
 
     @Override
     public void endOfYear() throws IOException {
-        File file = new File("evidence.ods");
+        File file = new File(filePath);
         SpreadSheet ss = SpreadSheet.createFromFile(file);
         int year = getCurrentYear();
         if (ss.getSheet(String.valueOf(year)) == null) {
@@ -97,7 +98,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
             throw new IllegalEntityException("Owner cannot be null");
         }
         isValid(invoice);
-        File file = new File("evidence.ods");
+        File file = new File(filePath);
         SpreadSheet ss = SpreadSheet.createFromFile(file);
 
         if (ss.getSheet("OwnerInfo") == null) {
@@ -311,13 +312,13 @@ public class InvoiceManagerImpl implements InvoiceManager {
     }
 
     private static void saveFile(Sheet sheet) throws IOException {
-        File newFile = new File("evidence.ods");
+        File newFile = new File(filePath);
         sheet.getSpreadSheet().saveAs(newFile);
     }
 
     private int getCurrentYear() throws IOException {
         try {
-            File file = new File("evidence.ods");
+            File file = new File(filePath);
             SpreadSheet spreadSheet = SpreadSheet.createFromFile(file);
             Sheet s = spreadSheet.getSheet(spreadSheet.getSheetCount() - 1);
             return Integer.parseInt(s.getName());
@@ -328,14 +329,14 @@ public class InvoiceManagerImpl implements InvoiceManager {
     }
 
     private Sheet getCurrentSheet() throws IOException {
-        File file = new File("evidence.ods");
+        File file = new File(filePath);
         SpreadSheet spreadSheet = SpreadSheet.createFromFile(file);
         return spreadSheet.getSheet(spreadSheet.getSheetCount() - 1);
     }
 
     @Override
     public Map<Integer, List<Invoice>> sheetToMap() throws IOException {
-        File file = new File("evidence.ods");
+        File file = new File(filePath);
         SpreadSheet spreadSheet = SpreadSheet.createFromFile(file);
 
         for (int i = 0; i < spreadSheet.getSheetCount(); i++) {
