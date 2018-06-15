@@ -16,7 +16,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
 
     private Map<Integer, List<Invoice>> invoices = new HashMap<>();
     private Person owner;
-    private static String filePath = "evidence.ods";
+    private static String filePath = "/home/aneta/Downloads/pb138-AccountingWebODS-master/AccountingPom/AccountingWebODS/src/main/resources/evidence.ods";
     private final static org.slf4j.Logger log = LoggerFactory.getLogger(InvoiceManagerImpl.class);
 
     public InvoiceManagerImpl() {  
@@ -253,33 +253,33 @@ public class InvoiceManagerImpl implements InvoiceManager {
     }
 
     @Override
-    public void exportToPdf(int year) {
+    public File exportToPdf(int year) {
         PdfExporter exporter = new PdfExporter();
         try {
-            exporter.export(invoices.get(year), year);
+            File file = exporter.export(invoices.get(year), year);
+            return file;
         } catch (DocumentException ex) {
             Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return null;
     }
 
     @Override
-    public void exportAllToPfd() {
-        invoices.entrySet().forEach((entry) -> {
-            exportToPdf(entry.getKey());
-        });
+    public File exportAllToPfd() {
+        PdfExporter exporter = new PdfExporter();
+        try {
+            File file = exporter.export(findAllInvoices());
+            return file;
+        } catch (DocumentException ex) {
+            Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
-
-    public double getIncomeBalance() throws IOException {
-        return Double.parseDouble(getCurrentSheet().getCellAt(5, 0).getValue().toString());
-    }
-
-    public double getExpenseBalance() throws IOException {
-        return Double.parseDouble(getCurrentSheet().getCellAt(3, 0).getValue().toString());
-    }
 
     @Override
     public Invoice getInvoiceById(Long id) {
@@ -333,12 +333,6 @@ public class InvoiceManagerImpl implements InvoiceManager {
             log.error("Year not started yet");
             return -1;
         }
-    }
-
-    private Sheet getCurrentSheet() throws IOException {
-        File file = new File(filePath);
-        SpreadSheet spreadSheet = SpreadSheet.createFromFile(file);
-        return spreadSheet.getSheet(spreadSheet.getSheetCount() - 1);
     }
 
     @Override

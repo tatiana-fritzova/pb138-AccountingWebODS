@@ -89,12 +89,12 @@ public interface InvoiceManager {
      * Exports history of all invoices to a pdf file.
      * @param year year of invoices to export to pdf
      */
-    void exportToPdf(int year);
+    File exportToPdf(int year);
     
     /**
      * Exports every invoice existing to pdf.
      */
-    void exportAllToPfd();
+    File exportAllToPfd();
     
     /**
      * Reads sheets and adds invoices to map.

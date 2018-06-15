@@ -41,7 +41,7 @@ public class PdfExporter {
         this.document = new Document(PageSize.A4);
     }
 
-    public void export(List<Invoice> invoices, int year) throws FileNotFoundException, DocumentException, IOException {
+    public File export(List<Invoice> invoices, int year) throws DocumentException, IOException {
         // Open the PDF document
         // step 2
         File file = new File ("Dokumenty/InvoicesFor" + String.valueOf(year)+".pdf");
@@ -77,7 +77,27 @@ public class PdfExporter {
         
         //po skonceni otvorit. Chceme?
         OOUtils.open(file);
-        
+        return file;
+
+    }
+
+    public File export(List<Invoice> invoices) throws DocumentException, IOException {
+        File file = new File ("Dokumenty/AllInvoices.pdf");
+        this.writer = PdfWriter.getInstance(document, new FileOutputStream(file));
+
+        document.open();
+
+        invoices.forEach((invoice) -> {
+            try {
+                addToPdf(invoice);
+                document.newPage();
+            } catch (DocumentException ex) {
+                Logger.getLogger(PdfExporter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        document.close();
+      //  OOUtils.open(file);
+        return file;
 
     }
 
