@@ -11,7 +11,7 @@ import java.util.Set;
 public interface InvoiceManager {
     
     /**
-     * Method sets an owner.
+     * Method sets a new owner.
      * @param person owner
      */
     void setOwner(Person person);
@@ -25,30 +25,28 @@ public interface InvoiceManager {
     /**
      * Creates new sheet for an upcoming year.
      * @param year new year 
-     * @throws IOException
+     * @throws IOException throws IOException
      */
     void newYearSheet(int year) throws IOException;
     
     /**
-     * Ends current year.
-     * @throws IOException
-     */
-    void endOfYear() throws IOException;
-    
-    /**
      * Adds new invoice (expense or income) to the ods file.
      * @param invoice invoice to be created
-     * @throws exceptions.IllegalEntityException
+     * @throws exceptions.IllegalEntityException throws IllegalEntityException
      */
     void createInvoice(Invoice invoice) throws IllegalEntityException, IOException ;
 
     /**
-     * Gets balance for current accounting year.
-     * @param year
+     * Gets balance for certain accounting year.
+     * @param year year
      * @return Double balance
      */
     double getCurrentBalance(int year);
 
+    /**
+     * Method returns a map containing balance for each accounting year.
+     * @return map of balances
+     */
     Map<Integer, Double> getCurrentBalances();
 
     /**
@@ -59,34 +57,13 @@ public interface InvoiceManager {
     Invoice getInvoiceById(Long id);
 
     /**
-     * Returns all invoices.
+     * Method returns all invoices.
      * @return list of all invoices
      */
     List<Invoice> findAllInvoices();
-    
-    /**
-     * Returns a list of all invoices.
-     * @param year year
-     * @return list of all invoices
-     */
-    List<Invoice> findAllInvoices(Integer year);
-
-    /** Returns a list of all expenses.
-     * @param year year
-     * @return list of all expenses
-     */
-    List<Invoice> findAllExpenses(Integer year);
 
     /**
-     * Returns a list of all incomes.
-     * @param year year
-     * @return list of all incomes
-     */
-    List<Invoice> findAllIncomes(Integer year);
-
-
-    /**
-     * Exports history of all invoices to a pdf file.
+     * Exports history of invoices from a certain year to a pdf file.
      * @param year year of invoices to export to pdf
      */
     File exportToPdf(int year);
@@ -97,18 +74,11 @@ public interface InvoiceManager {
     File exportAllToPfd();
     
     /**
-     * Reads sheets and adds invoices to map.
+     * Reads all sheets and adds invoices to map.
      * @return map of all invoices
-     * @throws IOException
+     * @throws IOException throws IOException
      */
     Map<Integer, List<Invoice>>  sheetToMap() throws IOException;
-    
-    /**
-     * Method counts a total amount of an invoice
-     * @param invoice invoice
-     * @return total amount spent/earned
-     */
-    double getTotalAmount(Invoice invoice);
 
     /**
      * Gets accounting years.

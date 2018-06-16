@@ -17,11 +17,12 @@ public class InvoiceManagerImpl implements InvoiceManager {
     private Map<Integer, List<Invoice>> invoices = new HashMap<>();
     private Person owner;
     private String filePath ;
-   // private static String filePath = System.getProperty("user.dir") + "/AccountingWebODS/evidence.ods";
     private final static org.slf4j.Logger log = LoggerFactory.getLogger(InvoiceManagerImpl.class);
 
     public InvoiceManagerImpl() {
-        this.filePath = "C:\\Users\\kkata\\Desktop\\Final\\pb138-AccountingWebODS-master\\AccountingPom\\AccountingWebODS\\evidence.ods";
+        this.filePath = "/home/aneta/Downloads/pb138-AccountingWebODS-master/AccountingPom/AccountingWebODS/evidence.ods";
+      //  this.filePath = InvoiceManagerImpl.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "../../evidence.ods";
+        System.out.println(filePath);
         try {
             this.invoices = sheetToMap();
             File file = new File(filePath);
@@ -92,22 +93,6 @@ public class InvoiceManagerImpl implements InvoiceManager {
         addHeading(sheet);
         saveFile(sheet);
         invoices.put(year, new ArrayList<>());
-    }
-
-    @Override
-    public void endOfYear() throws IOException {
-        File file = new File(filePath);
-        SpreadSheet ss = SpreadSheet.createFromFile(file);
-        int year = getCurrentYear();
-        if (ss.getSheet(String.valueOf(year)) == null) {
-            log.error("Sheet does not exist.");
-        }
-        Sheet sheet = ss.getSheet(String.valueOf(year));
-
-        int row = sheet.getRowCount() + 1;
-        sheet.ensureRowCount(row);
-        sheet.getCellAt("A" + row).setValue("end");
-        saveFile(sheet);
     }
 
     @Override
@@ -231,48 +216,6 @@ public class InvoiceManagerImpl implements InvoiceManager {
     }
 
     @Override
-    public double getTotalAmount(Invoice invoice) {
-        double totalPrice = 0.0;
-        for (Item i : invoice.getItems()) {
-            totalPrice += i.getPrice();
-        }
-        return totalPrice;
-    }
-
-    @Override
-    public List<Invoice> findAllInvoices(Integer year) {
-        return Collections.unmodifiableList(invoices.get(year));
-    }
-
-    @Override
-    public List<Invoice> findAllExpenses(Integer year) {
-        List<Invoice> expenses = new ArrayList<>();
-        for (Invoice i : invoices.get(year)) {
-            if (InvoiceType.EXPENSE.equals(i.getType())) {
-                expenses.add(i);
-            }
-        }
-        if (expenses.isEmpty()) {
-            return Collections.emptyList();
-        }
-        return expenses;
-    }
-
-    @Override
-    public List<Invoice> findAllIncomes(Integer year) {
-        List<Invoice> incomes = new ArrayList<>();
-        for (Invoice i : invoices.get(year)) {
-            if (InvoiceType.INCOME.equals(i.getType())) {
-                incomes.add(i);
-            }
-        }
-        if (incomes.isEmpty()) {
-            return Collections.emptyList();
-        }
-        return incomes;
-    }
-
-    @Override
     public File exportToPdf(int year) {
         PdfExporter exporter = new PdfExporter();
         try {
@@ -337,18 +280,6 @@ public class InvoiceManagerImpl implements InvoiceManager {
     private void saveFile(Sheet sheet) throws IOException {
         File newFile = new File(filePath);
         sheet.getSpreadSheet().saveAs(newFile);
-    }
-
-    private int getCurrentYear() throws IOException {
-        try {
-            File file = new File(filePath);
-            SpreadSheet spreadSheet = SpreadSheet.createFromFile(file);
-            Sheet s = spreadSheet.getSheet(spreadSheet.getSheetCount() - 1);
-            return Integer.parseInt(s.getName());
-        } catch (NumberFormatException e) {
-            log.error("Year not started yet");
-            return -1;
-        }
     }
 
     @Override
@@ -441,6 +372,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
     public Set<Integer> getYears() {
         return invoices.keySet();
     }
+
     @Override
     public double getCurrentBalance(int year) {
         Double balance = 0d;
