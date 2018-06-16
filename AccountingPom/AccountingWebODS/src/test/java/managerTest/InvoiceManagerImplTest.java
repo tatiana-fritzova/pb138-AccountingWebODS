@@ -12,6 +12,8 @@ import backend.InvoiceType;
 import backend.Item;
 import backend.Person;
 import exceptions.IllegalEntityException;
+
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
@@ -36,7 +38,7 @@ public class InvoiceManagerImplTest {
     private final Person personTwo = new Person("Phillip Smith", "Ulica mieru 45, Ilava");
     private final Person owner = new Person("Katarina Matusova", "Pod hajom 1366, Dubnica");
     private final Person personEmpty = new Person("", "");
-    private final InvoiceManagerImpl manager = new InvoiceManagerImpl();
+    private final InvoiceManagerImpl manager = new InvoiceManagerImpl(path());
 
     private final Item itemOne = new Item("tv", 200.0);
     private final Item itemTwo = new Item("pc", 300.0);
@@ -81,26 +83,19 @@ public class InvoiceManagerImplTest {
 
     }
 
+    private String path() {
+        String dir = System.getProperty("user.dir");
+        String str =  dir + "/evidenceTest.ods";
+        return str;
+    }
+
     @Test(expected = IllegalEntityException.class)
     public void createNullInvoice() throws Exception {
         manager.createInvoice(null);
     }
 
     @Test
-    public void createInvoice() throws IOException, IllegalEntityException {
-        Invoice invoice = sampleInvoiceIncome().build();
-        manager.setOwner(owner);
-        manager.createInvoice(invoice);
-
-        Long invoiceId = invoice.getId();
-        assertNotNull(invoiceId);
-
-        assertThat(manager.getInvoiceById(invoiceId))
-                .isEqualToComparingFieldByField(invoice);
-    }
-
-    @Test
-    public void createIncomeWithNullBillTo() throws Exception {
+    public void createIncome() throws Exception {
         Invoice invoice = sampleInvoiceIncome().billTo(null).build();
         manager.setOwner(owner);
         manager.createInvoice(invoice);

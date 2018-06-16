@@ -16,16 +16,35 @@ public class InvoiceManagerImpl implements InvoiceManager {
 
     private Map<Integer, List<Invoice>> invoices = new HashMap<>();
     private Person owner;
-    private static String filePath = "/home/tatiana/Desktop/pb138-AccountingWebODS-master/AccountingPom/AccountingWebODS/evidence.ods";
-//    private static String filePath = System.getProperty("user.home") + "/AccountingWebODS/evidence.ods";
+    private String filePath ;
+   // private static String filePath = System.getProperty("user.dir") + "/AccountingWebODS/evidence.ods";
     private final static org.slf4j.Logger log = LoggerFactory.getLogger(InvoiceManagerImpl.class);
 
     public InvoiceManagerImpl() {
-        try {                      
+        this.filePath = "C:\\Users\\kkata\\Desktop\\Final\\pb138-AccountingWebODS-master\\AccountingPom\\AccountingWebODS\\evidence.ods";
+        try {
             this.invoices = sheetToMap();
             File file = new File(filePath);
             SpreadSheet ss = SpreadSheet.createFromFile(file);
             
+            if (ss.getSheet("OwnerInfo") != null) {
+                Sheet sheet = ss.getSheet("OwnerInfo");
+                String name = sheet.getCellAt("B" + 2).getValue().toString();
+                String address = sheet.getCellAt("B" + 3).getValue().toString();
+                this.owner = new Person(name, address);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public InvoiceManagerImpl(String path) {
+        this.filePath = path;
+        try {
+            this.invoices = sheetToMap();
+            File file = new File(filePath);
+            SpreadSheet ss = SpreadSheet.createFromFile(file);
+
             if (ss.getSheet("OwnerInfo") != null) {
                 Sheet sheet = ss.getSheet("OwnerInfo");
                 String name = sheet.getCellAt("B" + 2).getValue().toString();
@@ -315,7 +334,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
 
     }
 
-    private static void saveFile(Sheet sheet) throws IOException {
+    private void saveFile(Sheet sheet) throws IOException {
         File newFile = new File(filePath);
         sheet.getSpreadSheet().saveAs(newFile);
     }
@@ -440,7 +459,6 @@ public class InvoiceManagerImpl implements InvoiceManager {
     public Map<Integer, Double> getCurrentBalances() {
         Map<Integer, Double> currentBalances = new HashMap<>();
         for (Integer year : invoices.keySet()) {
-//            Double twoPlaces = getCurrentBalance(year) * 100;
             currentBalances.put(year, getCurrentBalance(year)) ;
         }
         return currentBalances;
