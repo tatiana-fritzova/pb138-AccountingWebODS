@@ -16,8 +16,8 @@ public class InvoiceManagerImpl implements InvoiceManager {
 
     private Map<Integer, List<Invoice>> invoices = new HashMap<>();
     private Person owner;
-    private static String filePath = "/home/aneta/Downloads/pb138-AccountingWebODS-master/AccountingPom/AccountingWebODS/evidence.ods";
-   // private static String filePath = System.getProperty("user.dir") + "/AccountingWebODS/evidence.ods";
+    private static String filePath = "/home/tatiana/Desktop/pb138-AccountingWebODS-master/AccountingPom/AccountingWebODS/evidence.ods";
+//    private static String filePath = System.getProperty("user.home") + "/AccountingWebODS/evidence.ods";
     private final static org.slf4j.Logger log = LoggerFactory.getLogger(InvoiceManagerImpl.class);
 
     public InvoiceManagerImpl() {
@@ -440,6 +440,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
     public Map<Integer, Double> getCurrentBalances() {
         Map<Integer, Double> currentBalances = new HashMap<>();
         for (Integer year : invoices.keySet()) {
+//            Double twoPlaces = getCurrentBalance(year) * 100;
             currentBalances.put(year, getCurrentBalance(year)) ;
         }
         return currentBalances;

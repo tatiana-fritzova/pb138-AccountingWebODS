@@ -20,7 +20,7 @@
 </head>
 <body>
 <jsp:include page="navbar.jsp"/>
-<div class="container" align="center">
+<div class="container">
     <h1>My profile</h1>
     <br>
     <c:if test="${not empty failure}">
@@ -50,7 +50,7 @@
             <label>Address:</label>
             <input type="text" class="form-control" name="ownerAddress" value="<c:out value="${currentAddress}"/>" required>
         </div>
-        <button type="submit" class="btn btn-default">Set new owner</button>
+        <button type="submit" class="btn btn-primary">Set new owner</button>
     </form>
 
 </Added new invoice.

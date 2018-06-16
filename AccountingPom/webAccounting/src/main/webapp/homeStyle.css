@@ -1,30 +1,10 @@
 h1.welcome {
     color: #40c4ff;
+    /*font-family: 'Open Sans', sans-serif;*/
     font-family: "Times New Roman", Times, serif;
     font-size: 5em;
 }
 
-.activities {
-    font-size: 15px;
-}
-
-a:link, a:visited {
-    font-family: "Times New Roman", Times, serif;
-    background-color: white;
-    color: #0094cc;
-    border: 2px solid #0094cc;
-    padding: 10px 15px;
-    font-size: 30px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    vertical-align: center;
-    /*margin-left: 30px;*/
-    /*margin-bottom: 15px;*/
-    width: 305px;
-}
-
-a:hover, a:active {
-    background-color: #0094cc;
-    color: white;
+.list-group {
+    font-size: 1.2em !important;
 }

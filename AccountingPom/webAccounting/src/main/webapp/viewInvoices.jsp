@@ -21,81 +21,70 @@
 </head>
 <body>
 <jsp:include page="navbar.jsp"/>
-<div class="container" align="center">
+<div class="container">
     <h1>List of invoices</h1>
-    <div class="container">
-        <div class="alert alert-info">
-            <strong>Current balance: </strong> <c:out value="${balance}"/>
 
-            <%--<table class="table table-hover">--%>
-                <%--<thead>--%>
-                <%--<tr>--%>
-                    <%--<th>year</th>--%>
-                    <%--<th>balance</th>--%>
-                <%--</tr>--%>
-                <%--</thead>--%>
-                <%--<tbody>--%>
-                <%--<c:forEach items="${balances.map}" var="balance">--%>
-                    <%--<tr>--%>
-                        <%--<td><c:out value="${balance.value}"/></td>--%>
-                        <%--<td><c:out value="${balance.value}"/></td>--%>
-                    <%--</tr>--%>
-                <%--</c:forEach>--%>
-                <%--</tbody>--%>
-            <%--</table>--%>
-        <%--</div>--%>
+    <div class="input-group">
+        <span class="input-group-addon glyphicon glyphicon-search" aria-hidden="true"></span>
+        <input class="form-control col-md-6" id="searchInput" type="text" placeholder="Search..." autofocus>
+    </div>
 
-
-        <div class="input-group">
-            <span class="input-group-addon glyphicon glyphicon-search" aria-hidden="true"></span>
-            <input class="form-control col-md-6" id="searchInput" type="text" placeholder="Search..." autofocus>
-        </div>
-
-        <br>
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>Type</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Items</th>
-                <th>Issue date</th>
-                <th>Due date</th>
-                <th>Total amount</th>
-            </tr>
-            </thead>
-            <tbody id="itemsTable">
-            <c:forEach items="${invoices}" var="invoice">
-
-                <c:if test="${invoice.type.toString() == 'INCOME'}"><tr class="alert alert-success"></c:if>
-                <c:if test="${invoice.type.toString() == 'EXPENSE'}"><tr class="alert alert-danger"></c:if>
+    <br>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th width="">Type</th>
+            <th width="">From</th>
+            <th width="">To</th>
+            <th width="19%">Items</th>
+            <th width="11%">Issue date</th>
+            <th width="11%">Due date</th>
+            <th width="10%">Total amount</th>
+        </tr>
+        </thead>
+        <tbody id="itemsTable">
+        <c:forEach items="${invoices}" var="invoice">
+            <c:choose>
+                <c:when test="${invoice.type.toString() == 'INCOME'}"><tr class="success"></c:when>
+                <c:otherwise><tr class="danger"></c:otherwise>
+            </c:choose>
                 <td><c:out value="${invoice.type}"/></td>
                 <td><c:out value="${invoice.billFrom.name}"/>, <c:out value="${invoice.billFrom.address}"/></td>
                 <td><c:out value="${invoice.billTo.name}"/>, <c:out value="${invoice.billTo.address}"/></td>
                 <td>
-                    <c:forEach items="${invoice.items}" var="item">
-                        <c:out value="${item.description}"/> (<c:out value="${item.price}"/> EUR) <br>
-                    </c:forEach>
+                    <c:choose>
+                        <c:when test="${not empty invoice.items}">
+                            <a href="#${invoice.id}" class="btn btn-default" data-toggle="collapse">Show items</a>
+                            <div id="${invoice.id}" class="collapse">
+                                <c:forEach items="${invoice.items}" var="item">
+                                    <c:out value="${item.description}"/> (<c:out value="${item.price}"/> EUR) <br>
+                                </c:forEach>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <a class="btn btn-default disabled">No items</a>
+                        </c:otherwise>
+                    </c:choose>
                 </td>
                 <td><c:out value="${invoice.issueDate}"/></td>
                 <td><c:out value="${invoice.dueDate}"/></td>
                 <td><c:out value="${invoice.getTotalAmount()}"/> EUR</td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-    </div>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</div>
 
-    <script>
-        $(document).ready(function () {
-            $("#searchInput").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
-                $("#itemsTable tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
+<script>
+    $(document).ready(function () {
+        $("#searchInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#itemsTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
-    </script>
+    });
+</script>
 
 
 </div>

@@ -23,6 +23,7 @@
 <div ng-app="itemList" ng-controller="myCtrl">
 
     <div class="container">
+        <h1>Create new Invoice</h1>
         <c:if test="${not empty failure}">
             <div class="alert alert-danger alert-dismissible">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -46,8 +47,8 @@
 
             <div class="row">
                 <div class="col-xs-12">
-                    <button type="submit" class="btn btn-primary">
-                        <div id="create">New Invoice</div>
+                    <button type="submit" class="btn btn-primary btn-md">
+                        <div id="create">Save</div>
                     </button>
                 </div>
             </div>

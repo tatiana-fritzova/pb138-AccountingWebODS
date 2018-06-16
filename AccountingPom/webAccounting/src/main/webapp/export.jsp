@@ -21,8 +21,6 @@
 <body>
 <body>
 <jsp:include page="navbar.jsp"/>
-<c:out value="${doget}"/>
-
 <div class="container">
     <c:if test="${not empty failure}">
         <div class="alert alert-danger alert-dismissible">

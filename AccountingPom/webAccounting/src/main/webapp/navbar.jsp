@@ -10,12 +10,13 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="home.jsp">Accounting</a>
+            <a class="navbar-brand" href="/"><b>Accounting</b></a>
         </div>
         <ul class="nav navbar-nav">
             <li class="nav-item"><a href="/myProfile">My profile</a></li>
             <li class="nav-item"><a href="/newInvoice">Add new invoice</a></li>
             <li class="nav-item"><a href="/viewInvoices">View invoices</a></li>
+            <li class="nav-item"><a href="/balances">Balances</a></li>
             <li class="nav-item"><a href="/export">Export to PDF</a></li>
         </ul>
     </div>
