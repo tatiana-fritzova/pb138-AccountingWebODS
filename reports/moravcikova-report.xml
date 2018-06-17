@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<article xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="cs">
+    <info>
+        <title>Projekt PB138: AccountingWebODS</title>
+        <subtitle>Záverečná správa</subtitle>
+        <author>
+            <firstname>Aneta</firstname>
+            <surname>Moravčíková</surname>
+        </author>
+    </info>
+    <section>
+        <title>Zadanie</title>
+        <para>
+          Cieľom bolo vytvorenie webovej aplikácie v Jave pre evidenciu príjmov a výdajov drobného živnostníka. Umožňuje zaevidovať nový príjem, výdaj, spočítať zisk, resp. výdaj za účtovné obdobia v evidencií a export evidovaných dát do PDF. Aplikácia je distribuovaná v archíve formátu zip.
+        </para>
+    </section>
+    <section>
+        <title>Moja úloha v tíme</title>
+	<subtitle>Backend</subtitle>
+        <para>
+            Moja práca spočívala vo vývoji backendu tak, aby aplikácia spĺňala požadovanú funkcionalitu. Základné funkcie aplikácie sa nachádzajú v triede InvoiceManagerImpl.java, implementované sú pomocou knižnice jOpenDocument. Položky sa ukladajú do ODS dokumentu, v ktorom sú roztriedené podľa ich roku založenia, v dokumente sa tiež nachádzajú informácie o živnostníkovi, ktoré sa dajú aktualizovať. Funkcia createInvoice vytvorí novú položku a zapíše ju do ODS evidencie príjmov a výdajov, ak pre rok jej založenia ešte neexistuje Sheet, tak sa vytvorí. Funkcia sheetToMap načíta dáta z aktuálneho ODS dokumentu. Ďalej som implementovala pomocné funkcie, ktoré sa neskôr využili v implementácii servletov a podporné funkcie ku hlavným funkcionalitám aplikácie. Keďže som si na začiatku nebola istá ako má celá aplikácia vyzerať, musela som implementáciu backendu počas realizácie projektu upravovať podľa požiadavok.
+	</para>
+    </section>
+</article>
