@@ -38,10 +38,10 @@ public class InvoiceManagerImplTest {
     private final Person personTwo = new Person("Phillip Smith", "Ulica mieru 45, Ilava");
     private final Person owner = new Person("Katarina Matusova", "Pod hajom 1366, Dubnica");
     private final Person personEmpty = new Person("", "");
-    private final InvoiceManagerImpl manager = new InvoiceManagerImpl("/");
+    private final InvoiceManagerImpl manager = new InvoiceManagerImpl(path());
 
-    private final Item itemOne = new Item("tv", 200.0);
-    private final Item itemTwo = new Item("pc", 300.0);
+    private final Item itemOne = new Item("tv", 200.0, true);
+    private final Item itemTwo = new Item("pc", 300.0, true);
 
     private List<Item> itemList() {
         List<Item> list = new ArrayList();
@@ -56,8 +56,7 @@ public class InvoiceManagerImplTest {
                 .billTo(personTwo)
                 .dueDate(LocalDate.of(1800, Month.MARCH, 10))
                 .issueDate(LocalDate.of(1902, Month.MARCH, 10))
-                .type(InvoiceType.INCOME)
-                .items(itemList());
+                .type(InvoiceType.INCOME);
 
     }
 
@@ -67,8 +66,7 @@ public class InvoiceManagerImplTest {
                 .billTo(personTwo)
                 .dueDate(LocalDate.of(1802, Month.MARCH, 10))
                 .issueDate(LocalDate.of(1800, Month.MARCH, 10))
-                .type(InvoiceType.INCOME)
-                .items(itemList());
+                .type(InvoiceType.INCOME);
 
     }
 
@@ -78,8 +76,7 @@ public class InvoiceManagerImplTest {
                 .billTo(personTwo)
                 .dueDate(LocalDate.of(1802, Month.MARCH, 10))
                 .issueDate(LocalDate.of(1800, Month.MARCH, 10))
-                .type(InvoiceType.EXPENSE)
-                .items(itemList());
+                .type(InvoiceType.EXPENSE);
 
     }
 
@@ -97,6 +94,7 @@ public class InvoiceManagerImplTest {
     @Test
     public void createIncome() throws Exception {
         Invoice invoice = sampleInvoiceIncome().billTo(null).build();
+        invoice.setItems(itemList());
         manager.setOwner(owner);
         manager.createInvoice(invoice);
 
@@ -110,6 +108,7 @@ public class InvoiceManagerImplTest {
     @Test
     public void createExpenseWithNullBillFrom() throws Exception {
         Invoice invoice = sampleInvoiceExpense().billFrom(null).build();
+        invoice.setItems(itemList());
         manager.setOwner(owner);
         manager.createInvoice(invoice);
 

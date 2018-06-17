@@ -18,6 +18,11 @@ public class Item {
         this.price = fancyFormat(price);
     }
 
+    public Item(String description, Double price, Boolean tests) {
+        this.description = description;
+        this.price = price;
+    }
+
     public String getDescription() {
         return description;
     }
