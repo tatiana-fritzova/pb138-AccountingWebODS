@@ -30,8 +30,8 @@ public class StartListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         LOG.debug("initializing web application");
         ServletContext servletContext = servletContextEvent.getServletContext();
-        String path = servletContext.getRealPath("/WEB-INF/evidence.ods");
-        InvoiceManager invoiceManager = new InvoiceManagerImpl(path);
+      //  String path = servletContext.getRealPath("/WEB-INF/evidence.ods");
+        InvoiceManager invoiceManager = new InvoiceManagerImpl();
         servletContext.setAttribute("invoiceManager", invoiceManager);
     }
 

@@ -20,12 +20,31 @@ public class InvoiceManagerImpl implements InvoiceManager {
     private String filePath ;
     private final static org.slf4j.Logger log = LoggerFactory.getLogger(InvoiceManagerImpl.class);
 
-    public InvoiceManagerImpl(String path) {
-        this.filePath = path;
+    public InvoiceManagerImpl() {
+     //   this.filePath = path;
         File directory = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
-        String testPath = directory.getParent() + "/evidence.ods";
+        this.filePath = directory.getParent() + "/evidence.ods";
         try {
-            File file = new File(testPath);
+            File file = new File(filePath);
+            this.invoices = sheetToMap();
+            SpreadSheet ss = SpreadSheet.createFromFile(file);
+
+            if (ss.getSheet("OwnerInfo") != null) {
+                Sheet sheet = ss.getSheet("OwnerInfo");
+                String name = sheet.getCellAt("B" + 2).getValue().toString();
+                String address = sheet.getCellAt("B" + 3).getValue().toString();
+                this.owner = new Person(name, address);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public InvoiceManagerImpl(String path) {
+        //   this.filePath = path;
+       // File directory = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+        this.filePath = path;
+        try {
+            File file = new File(filePath);
             this.invoices = sheetToMap();
             SpreadSheet ss = SpreadSheet.createFromFile(file);
 
