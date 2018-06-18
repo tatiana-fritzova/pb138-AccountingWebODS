@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V5.0//EN"
+                   "http://www.oasis-open.org/docbook/xml/5.0/docbook.dtd"> -->
+<article xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="cs">
+  <info>
+    <title>Projekt PB138: AccountingWebODS</title>
+    <subtitle>Záverečná správa</subtitle>
+    <author>
+      <personname>Tatiana Fritzová</personname>
+    </author>
+  </info>
+    <section>
+        <title>Zadanie a členovia tímu</title>
+        <para>
+          Cieľom bolo vytvorenie webovej aplikácie v Jave pre evidenciu príjmov a výdajov drobného živnostníka. Umožňuje zaevidovať nový príjem, výdaj, spočítať zisk, resp. výdaj za účtovné obdobia v evidencií a export evidovaných dát do PDF. Aplikácia je distribuovaná v archíve formátu zip.
+	       </para>
+    </section>
+    <section>
+        <title>Začiatok práce a práca v tíme</title>
+        <para>
+          Projekt sme začali spoločnou diskusiou. Jej cieľom bolo bližšie definovanie funkcionality výsledného projektu, objektového návrhu a dát, ktoré sme chceli pre jednotlivé objekty uchovávať. V tomto bode boli tiež prerozdelené úlohy medzi jednotlivých členov tímu. V komunikácií sme pokračovali aj počas samotného vývoja a rozoberali podnety na zmeny v pôvodnom návrhu. Pre zdieľanie aktuálneho stavu projektu sme používali repozitár založený na github.com.
+        </para>
+    </section>
+    <section>
+        <title>Moja úloha v tíme</title>
+        <sect1>
+            <subtitle>Základný popis</subtitle>
+            <para>
+                Mojou úlohou bolo vytvorit webovú časť aplikácie. Tá je nasadená do JSP/Servlet kontajneru Jetty. Klient komunikuje so serverom prostredníctvom HTTP požadavok, které potom obsluhujú servlety. URL mapovania, na ktorých jednotlivé servlety naslúchajú, sú definované v ich anotáciách. V prípade potreby dotaz presmerujú na iný servlet. Obsah samotných webových stránok je dynamicky generovaný prostredníctvom JSP (JavaServer Pages). Front end som vybudovala najmä za pomoci technológií HTML, Bootstrap, AngularJS a jQuery. Mojou prioritou bola predovšetkým jednoduchosť a intuitívnosť ovládania užívateľského rozhrania.
+            </para>
+        </sect1>
+        <sect2>
+            <subtitle>Popis vytvoreného užívateľského rozhrania</subtitle>
+            <para>
+
+                Pri spustení aplikácie sa zobrazí úvodná stránka. Obsahuje navigáciu, ktorá odkazuje na jednolivé stránky aplikácie. Navigácia z ostatných stránok je zabezpečená navigačnou lištou na vrchu obrazovky.
+                <itemizedlist mark='bullet'>
+                    <listitem>
+                        <emphasis>My profile:</emphasis> Umožňuje užívateľovi spravovať svoje osobné informácie. Pri evidovaní príjmu/výdaju ich teda nemusí vždy zadávať znovu, použijú sa uložené. Po odoslaní formuláru dostane informáciu o úspechu, resp. neúspechu vybavenia jeho požiadavky.
+                    </listitem>
+                    <listitem>
+                        <emphasis>Add new invoice:</emphasis> Sprístuňuje formulár pre evidovanie novej faktúry. Umožňuje výber typu faktúry (príjem, výdaj), dátumu vystavenia a splatnosti, meno a adresu platcu, resp. príjemcu, a pridávanie faktúrovaných položiek. Pridanie položky je obsluhované Angular modulom, ktorý pracuje s názvom, cenou za položku a jej početom. Pre položky generuje tabuľku, skrytý vstup vo formulári a tiež počíta celkovú faktúrovanú sumu, o ktorej informuje užívateľa na spodu panelu s tabouľkou položiek. Po odoslaní formuláru opäť dostane informáciu o výsledku jeho požiadavky.
+                    </listitem>
+                    <listitem>
+                        <emphasis>View invoices:</emphasis> Zobrazuje tabuľku všetkých evidovaných faktúr. Farba riadku tabuľky indikuje typ faktúry, červená pre výdaj, zelená pre príjem. Aby tabuľka bola kompaktnejšia, faktúrované položky sú prístupné po stisknutí tlačidla "Show items". Pod nadpisom sa tiež nachádza jednoduché vyhľadávanie, implementované pomocou jQuery, ktoré filtruje riadky tabuľky na základe ich textového obsahu.
+                    </listitem>
+                    <listitem>
+                        <emphasis>Balances:</emphasis> Zobrazuje údaje o výške zisku, resp. straty za jednotlivé účtovné obdobia v tabuľke.
+                    </listitem>
+                    <listitem>
+                        <emphasis>Export:</emphasis> Poskytuje výber účtovných období (tiež možnosť vybrať všetky obdobia), na základe ktorého je možné stiahnuť PDF dokument s evidovanými faktúrami za požadované obdobie.
+                    </listitem>
+                </itemizedlist>
+            </para>
+
+        </sect2>
+    </section>
+</article>

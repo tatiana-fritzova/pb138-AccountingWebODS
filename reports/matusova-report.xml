@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V5.0//EN"
+"http://www.oasis-open.org/docbook/xml/5.0/docbook.dtd"> -->
+<article xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="cs">
+    <info>
+        <title>Projekt PB138: AccountingWebODS</title>
+        <subtitle>Záverečná správa</subtitle>
+        <author>
+            <personname>Katarína Matúšová</personname>
+        </author>
+    </info>
+    <section>
+        <title>Zadanie</title>
+        <para>
+            Cieľom bolo vytvorenie webovej aplikácie v Jave pre evidenciu príjmov a výdajov drobného živnostníka. Umožňuje zaevidovať nový príjem, výdaj, spočítať zisk, resp. výdaj za účtovné obdobia v evidencií a export evidovaných dát do PDF. Aplikácia je distribuovaná v archíve formátu zip.
+        </para>
+    </section>
+    <section>
+        <title>Moja úloha v tíme</title>
+        <sect1>
+            <subtitle>Export do Pdf</subtitle>
+            <para>
+                Mojou úlohou bolo vytvoriť triedu PdfExporter ,ktorá exportuje data do PDF. Trieda má dve metody (export a exportAll). Metoda export, vracia pdf súbor, ktorý obsahuje faktúry daného roku tak ,že každá faktúra je na novej strane. Ako parametre berie list faktúr a daný rok. Metoda exportAll , vracia pdf súbor, ktorý obsahuje všetky faktúry všetkých rokov, ktoré sú uložené v ods.súbore. Každá faktúra je na novej strane. Ako parameter berie list,ktorý obsahuje všetky faktúry z ods. súboru. Používa knižnicu iText PDF.            </para>
+        </sect1>
+        <sect2>
+            <subtitle>Testovanie</subtitle>
+            <para>
+                K managerovi som napísala sadu jednotkových testov, na overenie ,či sa sa data správne ukaldajú do .ods súboru. Použila som knižnicu JUnit a AssertJ pre prehľadné testy. Testované je najmä vyhadzovanie vhodných výnimok. Používame vlastnú výnimku IllegalEntityException.Vyhadzuje sa v prípade ,že nejaký z atribútov managera je null, alebo pokiaľ meno alebo adresa osoby boli prázdne stringy. Testuje sa aj ,či sú dátumy v správnom poradí, čiže, či issueDate nie je neskôr ako dueDate. Pre zjednodušenie vytvárania testov bola vytvorená trieda InvoiceBuilder, ktorá zjednodušila nastavenie atribútov objektu, takže nebolo nutné používať v každom teste set funkcie.	
+            </para>
+        </sect2>
+    </section>
+</article>

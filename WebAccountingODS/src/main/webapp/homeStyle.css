@@ -1,0 +1,10 @@
+h1.welcome {
+    color: #40c4ff;
+    /*font-family: 'Open Sans', sans-serif;*/
+    font-family: "Times New Roman", Times, serif;
+    font-size: 5em;
+}
+
+.list-group {
+    font-size: 1.2em !important;
+}
