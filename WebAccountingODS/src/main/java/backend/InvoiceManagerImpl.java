@@ -22,10 +22,10 @@ public class InvoiceManagerImpl implements InvoiceManager {
 
     public InvoiceManagerImpl(String path) {
         this.filePath = path;
-//        File directory = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
-//        String testPath = directory.getParent() + "/evidence.ods";
+        File directory = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+        String testPath = directory.getParent() + "/evidence.ods";
         try {
-            File file = new File(filePath);
+            File file = new File(testPath);
             this.invoices = sheetToMap();
             SpreadSheet ss = SpreadSheet.createFromFile(file);
 

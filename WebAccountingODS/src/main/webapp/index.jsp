@@ -31,11 +31,11 @@
 <div class="container">
     <div class="list-group">
         <div class="list-group-item list-group-item-info">Choose action</div>
-        <a href="/myProfile" class="list-group-item">My profile</a>
-        <a href="/newInvoice" class="list-group-item">Add new invoice</a>
-        <a href="/viewInvoices" class="list-group-item">View invoices</a>
-        <a href="/balances" class="list-group-item">Balances for accounting years</a>
-        <a href="/export" class="list-group-item">Export to PDF</a>
+        <a href="${param.contextPath}/myProfile" class="list-group-item">My profile</a>
+        <a href="${param.contextPath}/newInvoice" class="list-group-item">Add new invoice</a>
+        <a href="${param.contextPath}/viewInvoices" class="list-group-item">View invoices</a>
+        <a href="${param.contextPath}/balances" class="list-group-item">Balances for accounting years</a>
+        <a href="${param.contextPath}/export" class="list-group-item">Export to PDF</a>
     </div>
 
 </div>

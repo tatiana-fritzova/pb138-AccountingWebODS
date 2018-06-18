@@ -45,6 +45,8 @@ public class PdfExporter {
 
     public File export(List<Invoice> invoices, int year) throws DocumentException, IOException {
         String dir = System.getProperty("user.dir");
+        File directory = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+        dir = directory.getParent();
         File file = new File (dir + "/InvoicesFor" + String.valueOf(year)+".pdf");
         Path path = Paths.get(file.getAbsolutePath());
         this.writer = PdfWriter.getInstance(document, new FileOutputStream(file));
@@ -58,6 +60,8 @@ public class PdfExporter {
 
     public File exportAll(List<Invoice> invoices) throws DocumentException, IOException {
         String dir = System.getProperty("user.dir");
+        File directory = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+        dir = directory.getParent();
         File file = new File (dir + "/Invoices.pdf");
         Path path = Paths.get(file.getAbsolutePath());
         System.out.println(path);

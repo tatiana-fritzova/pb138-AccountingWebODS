@@ -13,11 +13,11 @@
             <a class="navbar-brand" href="/"><b>Accounting</b></a>
         </div>
         <ul class="nav navbar-nav">
-            <li class="nav-item"><a href="/myProfile">My profile</a></li>
-            <li class="nav-item"><a href="/newInvoice">Add new invoice</a></li>
-            <li class="nav-item"><a href="/viewInvoices">View invoices</a></li>
-            <li class="nav-item"><a href="/balances">Balances</a></li>
-            <li class="nav-item"><a href="/export">Export to PDF</a></li>
+            <li class="nav-item"><a href="${param.contextPath}/myProfile">My profile</a></li>
+            <li class="nav-item"><a href="${param.contextPath}/newInvoice">Add new invoice</a></li>
+            <li class="nav-item"><a href="${param.contextPath}/viewInvoices">View invoices</a></li>
+            <li class="nav-item"><a href="${param.contextPath}/balances">Balances</a></li>
+            <li class="nav-item"><a href="${param.contextPath}/export">Export to PDF</a></li>
         </ul>
     </div>
 </nav>
