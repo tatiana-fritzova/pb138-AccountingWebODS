@@ -44,6 +44,8 @@
             </c:when>
         </c:choose>
 
+        <h1>My profile</h1><br>
+      
         <form action="${pageContext.request.contextPath}/newInvoice" method="post">
 
             <div id="itemInputs">
