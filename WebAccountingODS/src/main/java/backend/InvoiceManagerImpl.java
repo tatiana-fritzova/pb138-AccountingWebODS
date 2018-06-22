@@ -4,6 +4,7 @@ import com.lowagie.text.DocumentException;
 import exceptions.IllegalEntityException;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.*;
@@ -20,9 +21,9 @@ public class InvoiceManagerImpl implements InvoiceManager {
     private String filePath ;
     private final static org.slf4j.Logger log = LoggerFactory.getLogger(InvoiceManagerImpl.class);
 
-    public InvoiceManagerImpl() {
+    public InvoiceManagerImpl() throws URISyntaxException {
      //   this.filePath = path;
-        File directory = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+        File directory = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
         this.filePath = directory.getParent() + "/evidence.ods";
         try {
             File file = new File(filePath);
@@ -130,7 +131,8 @@ public class InvoiceManagerImpl implements InvoiceManager {
         sheet.ensureRowCount(row);
         addRow(invoice, row, sheet);
         saveFile(sheet);
-        
+
+        invoices = sheetToMap();
     }
 
     private void addRow(Invoice invoice, int row, Sheet sheet) {
@@ -209,9 +211,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
     @Override
     public List<Invoice> findAllInvoices() {
         List<Invoice> allLists = new ArrayList<>();
-        invoices.values().forEach((invoiceList) -> {
-            allLists.addAll(invoiceList);
-        });
+        invoices.values().forEach((invoiceList) -> allLists.addAll(invoiceList));
         return allLists;
     }
 
@@ -221,7 +221,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
         try {
             File file = exporter.export(invoices.get(year), year);
             return file;
-        } catch (DocumentException | IOException ex) {
+        } catch (URISyntaxException | DocumentException | IOException ex ) {
             Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
@@ -233,7 +233,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
         try {
             File file = exporter.exportAll(findAllInvoices());
             return file;
-        } catch (DocumentException | IOException ex) {
+        } catch (URISyntaxException | DocumentException | IOException ex) {
             Logger.getLogger(InvoiceManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
@@ -286,7 +286,7 @@ public class InvoiceManagerImpl implements InvoiceManager {
     public Map<Integer, List<Invoice>> sheetToMap() throws IOException {
         File file = new File(filePath);
         SpreadSheet spreadSheet = SpreadSheet.createFromFile(file);
-
+        Map<Integer, List<Invoice>> result = new HashMap<>();
         for (int i = 0; i < spreadSheet.getSheetCount(); i++) {
             Sheet sheet = spreadSheet.getSheet(i);
             if (sheet.getName().equals("OwnerInfo")) {
@@ -349,10 +349,10 @@ public class InvoiceManagerImpl implements InvoiceManager {
                     yearlyInvoices = new ArrayList<>();
                 }
                 yearlyInvoices.add(invoice);
-                invoices.put(year, yearlyInvoices);
+                result.put(year, yearlyInvoices);
             }
         }
-        return invoices;
+        return result;
     }
 
     private void isValid(Invoice invoice) throws IllegalEntityException {

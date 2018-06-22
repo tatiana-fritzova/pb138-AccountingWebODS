@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
@@ -43,9 +44,9 @@ public class PdfExporter {
         this.document = new Document(PageSize.A4);
     }
 
-    public File export(List<Invoice> invoices, int year) throws DocumentException, IOException {
+    public File export(List<Invoice> invoices, int year) throws DocumentException, IOException, URISyntaxException {
         String dir = System.getProperty("user.dir");
-        File directory = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+        File directory = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
         dir = directory.getParent();
         File file = new File (dir + "/InvoicesFor" + String.valueOf(year)+".pdf");
         Path path = Paths.get(file.getAbsolutePath());
@@ -58,9 +59,9 @@ public class PdfExporter {
         return new File(path.toString());
     }
 
-    public File exportAll(List<Invoice> invoices) throws DocumentException, IOException {
+    public File exportAll(List<Invoice> invoices) throws DocumentException, IOException, URISyntaxException {
         String dir = System.getProperty("user.dir");
-        File directory = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+        File directory = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
         dir = directory.getParent();
         File file = new File (dir + "/Invoices.pdf");
         Path path = Paths.get(file.getAbsolutePath());

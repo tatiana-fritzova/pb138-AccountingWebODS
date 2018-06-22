@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -31,7 +32,12 @@ public class StartListener implements ServletContextListener {
         LOG.debug("initializing web application");
         ServletContext servletContext = servletContextEvent.getServletContext();
       //  String path = servletContext.getRealPath("/WEB-INF/evidence.ods");
-        InvoiceManager invoiceManager = new InvoiceManagerImpl();
+        InvoiceManager invoiceManager = null;
+        try {
+            invoiceManager = new InvoiceManagerImpl();
+        } catch (URISyntaxException e) {
+            LOG.debug("Error when creating invoice manager. {}",e.getMessage());
+        }
         servletContext.setAttribute("invoiceManager", invoiceManager);
     }
 
